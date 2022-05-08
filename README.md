@@ -13,7 +13,7 @@ You can see current unpublished docs here: [![local-docs]](https://emilgardis.gi
 
 See [examples](./examples) for examples.
 
-[local-docs]: https://img.shields.io/github/workflow/status/Emilgardis/twitch_types/github%20pages/master?label=master%20docs&style=flat-square&event=push
+[local-docs]: https://img.shields.io/github/workflow/status/Emilgardis/twitch_types/github%20pages/main?label=master%20docs&style=flat-square&event=push
 
 
 
