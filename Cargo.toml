@@ -36,6 +36,15 @@ tracing = { version = "0.1", optional = true }
 [features]
 default = []
 
+emote = []
+moderation = []
+points = []
+stream = []
+timestamp = []
+user = []
+goal = []
+eventsub = []
+
 deny_unknown_fields = []
 
 [package.metadata.docs.rs]
