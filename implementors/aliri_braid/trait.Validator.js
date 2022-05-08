@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["twitch_types"] = [{"text":"impl <a class=\"trait\" href=\"https://docs.rs/aliri_braid/0.1.10/aliri_braid/trait.Validator.html\" title=\"trait aliri_braid::Validator\">Validator</a> for <a class=\"struct\" href=\"twitch_types/struct.Timestamp.html\" title=\"struct twitch_types::Timestamp\">Timestamp</a>","synthetic":false,"types":["twitch_types::Timestamp"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
