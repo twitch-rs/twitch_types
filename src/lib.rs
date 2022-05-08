@@ -243,7 +243,7 @@ impl TimestampRef {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api2::types::Timestamp;
+    /// use twitch_types::Timestamp;
     ///
     /// let time = Timestamp::new("2021-07-01T13:37:00Z").unwrap();
     /// assert_eq!(time.normalize()?.as_ref(), &time);
@@ -272,7 +272,7 @@ impl TimestampRef {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api2::types::Timestamp;
+    /// use twitch_types::Timestamp;
     ///
     /// let time2021 = Timestamp::new("2021-07-01T13:37:00Z").unwrap();
     /// let time2020 = Timestamp::new("2020-07-01T13:37:00Z").unwrap();
@@ -290,7 +290,7 @@ impl TimestampRef {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api2::types::Timestamp;
+    /// use twitch_types::Timestamp;
     ///
     /// let time = Timestamp::new("2021-07-01T13:37:00Z").unwrap();
     /// assert_eq!(time.to_day().as_str(), "2021-07-01T00:00:00Z")
@@ -570,7 +570,7 @@ impl std::fmt::Display for EmoteScale {
 /// # Examples
 ///
 /// ```rust
-/// # use twitch_api2::types::EmoteId;
+/// # use twitch_types::EmoteId;
 /// let emote_id = EmoteId::from("emotesv2_dc24652ada1e4c84a5e3ceebae4de709");
 /// assert_eq!(emote_id.url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0")
 /// ```
