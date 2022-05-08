@@ -355,11 +355,11 @@ impl PartialOrd for TimestampRef {
         #[allow(clippy::if_same_then_else)]
         if this.as_ref().as_str().contains('.') ^ other.as_ref().as_str().contains('.') {
             #[cfg(feature = "tracing")]
-            tracing::trace!("comparing two `Timestamps` with differing punctuation");
+            tracing::warn!("comparing two `Timestamps` with differing punctuation");
             return None;
         } else if this.0.len() != other.0.len() {
             #[cfg(feature = "tracing")]
-            tracing::trace!("comparing two `Timestamps` with differing length");
+            tracing::warn!("comparing two `Timestamps` with differing length");
             return None;
         }
         this.as_str().partial_cmp(other.as_str())
