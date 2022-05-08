@@ -1,6 +1,6 @@
 name: CI
 env:
-  CI_TWITCH_TYPES_FEATURES: ""
+  CI_TWITCH_TYPES_FEATURES: "time"
 on:
   pull_request:
     types: [opened, reopened, synchronize]
@@ -97,7 +97,7 @@ jobs:
         with:
           command: test
           args: --doc --features "${{ env.CI_TWITCH_TYPES_FEATURES }}"
-      - name: Check twitch_TYPES docs
+      - name: Check twitch_types docs
         uses: actions-rs/cargo@v1
         env:
           RUSTDOCFLAGS: "--cfg nightly"

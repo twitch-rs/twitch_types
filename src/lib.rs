@@ -1,3 +1,7 @@
+#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
+#![cfg_attr(nightly, feature(doc_cfg))]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
+
 //! Twitch types
 
 use serde::{Deserialize, Serialize};
