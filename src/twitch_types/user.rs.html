@@ -82,10 +82,6 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
-<span id="80">80</span>
-<span id="81">81</span>
-<span id="82">82</span>
-<span id="83">83</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">DisplayName</span>, <span class="ident">UserId</span>, <span class="ident">UserName</span>};
@@ -116,10 +112,6 @@
         })
     }
 }
-
-<span class="doccomment">/// A Hype Train ID</span>
-<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainId</span>;
 
 <span class="doccomment">/// User types: &quot;staff&quot;, &quot;admin&quot;, &quot;global_mod&quot;, or &quot;&quot;.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Deserialize</span>)]</span>

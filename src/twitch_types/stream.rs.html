@@ -176,6 +176,10 @@
 <span id="171">171</span>
 <span id="172">172</span>
 <span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="doccomment">/// A Stream ID</span>
@@ -201,6 +205,10 @@
 <span class="doccomment">/// A Stream Segment ID.</span>
 <span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StreamSegmentId</span>;
+
+<span class="doccomment">/// A Hype Train ID</span>
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainId</span>;
 
 <span class="doccomment">/// A game or category as defined by Twitch</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
