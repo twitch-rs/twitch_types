@@ -28,9 +28,7 @@ impl EmoteIdRef {
     }
 
     /// Create a [`EmoteUrlBuilder`] for this emote
-    pub fn url(&self) -> EmoteUrlBuilder<'_> {
-        EmoteUrlBuilder::new(self)
-    }
+    pub fn url(&self) -> EmoteUrlBuilder<'_> { EmoteUrlBuilder::new(self) }
 }
 
 /// Emote url template
@@ -48,9 +46,7 @@ pub enum EmoteAnimationSetting {
 }
 
 impl std::fmt::Display for EmoteAnimationSetting {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.serialize(f)
-    }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
 }
 
 /// Background themes available for an emote.
@@ -64,15 +60,11 @@ pub enum EmoteThemeMode {
 }
 
 impl Default for EmoteThemeMode {
-    fn default() -> Self {
-        Self::Light
-    }
+    fn default() -> Self { Self::Light }
 }
 
 impl std::fmt::Display for EmoteThemeMode {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.serialize(f)
-    }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
 }
 
 /// Scales available for an emote.
@@ -90,15 +82,11 @@ pub enum EmoteScale {
 }
 
 impl Default for EmoteScale {
-    fn default() -> Self {
-        Self::Size1_0
-    }
+    fn default() -> Self { Self::Size1_0 }
 }
 
 impl std::fmt::Display for EmoteScale {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.serialize(f)
-    }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
 }
 
 /// Builder for [emote URLs](https://dev.twitch.tv/docs/irc/emotes#emote-cdn-url-format).

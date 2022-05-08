@@ -18,9 +18,7 @@ pub enum BroadcasterType {
 
 impl Serialize for BroadcasterType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
+    where S: serde::Serializer {
         serializer.serialize_str(match self {
             BroadcasterType::Partner => "partner",
             BroadcasterType::Affiliate => "affiliate",
@@ -48,9 +46,7 @@ pub enum UserType {
 
 impl Serialize for UserType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
+    where S: serde::Serializer {
         serializer.serialize_str(match self {
             UserType::Staff => "staff",
             UserType::Admin => "admin",
