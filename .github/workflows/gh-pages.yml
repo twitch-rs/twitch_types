@@ -1,6 +1,5 @@
 name: github pages
 env:
-  CI_TWITCH_TYPES_FEATURES: "time"
   RUSTDOCFLAGS: "-Z unstable-options --cfg nightly"
   RUSTFLAGS: "--cfg nightly"
 on:
@@ -24,7 +23,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: doc
-          args: --no-deps --locked --features "${{ env.CI_TWITCH_TYPES_FEATURES }}" -Zrustdoc-map
+          args: --no-deps --locked --all-features -Zrustdoc-map
       - name: move index.html
         run: cp ./docs/index.html ./target/doc/index.html
       - name: Deploy

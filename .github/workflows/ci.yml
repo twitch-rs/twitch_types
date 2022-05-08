@@ -1,6 +1,4 @@
 name: CI
-env:
-  CI_TWITCH_TYPES_FEATURES: "time"
 on:
   pull_request:
     types: [opened, reopened, synchronize]
@@ -36,7 +34,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_TYPES_FEATURES }}"
+          args: --locked --all-targets --all-features
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
@@ -96,7 +94,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --doc --features "${{ env.CI_TWITCH_TYPES_FEATURES }}"
+          args: --doc --all-features
       - name: Check twitch_types docs
         uses: actions-rs/cargo@v1
         env:
@@ -104,7 +102,7 @@ jobs:
           RUSTFLAGS: "--cfg nightly"
         with:
           command: doc
-          args: --locked --no-deps --features "${{ env.CI_TWITCH_TYPES_FEATURES }}"
+          args: --locked --no-deps --all-features
   release:
     name: Release
     runs-on: ubuntu-latest
@@ -122,4 +120,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: publish
-          args: --dry-run --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
+          args: --dry-run --all-features
