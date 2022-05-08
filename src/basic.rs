@@ -10,7 +10,6 @@ pub struct DisplayName;
 #[aliri_braid::braid(serde)]
 pub struct Nickname;
 
-
 /// A username, also specified as login. Should not be capitalized.
 pub type UserName = Nickname;
 

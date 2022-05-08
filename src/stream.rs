@@ -71,7 +71,6 @@ impl Serialize for SubscriptionTier {
     }
 }
 
-
 /// Period during which the video was created
 #[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]

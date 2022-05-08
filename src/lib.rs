@@ -23,8 +23,6 @@ mod user;
 
 pub use basic::*;
 
-#[cfg(feature = "timestamp")]
-pub use crate::time::*;
 #[cfg(feature = "emote")]
 pub use crate::emote::*;
 #[cfg(feature = "eventsub")]
@@ -37,5 +35,7 @@ pub use crate::moderation::*;
 pub use crate::points::*;
 #[cfg(feature = "stream")]
 pub use crate::stream::*;
+#[cfg(feature = "timestamp")]
+pub use crate::time::*;
 #[cfg(feature = "user")]
 pub use crate::user::*;

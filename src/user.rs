@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{UserId, UserName, DisplayName};
+use crate::{DisplayName, UserId, UserName};
 
 /// Broadcaster types: "partner", "affiliate", or "".
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
