@@ -71,7 +71,7 @@ impl aliri_braid::Validator for Timestamp {
                 let partial_time = if let Some(stripped) = full_time.strip_suffix('Z') {
                     stripped
                 } else {
-                    return Err(TimestampParseError::Other("unsupported non-UTC timestamp, enable the `time` feature in `twitch_api2` to enable parsing these"));
+                    return Err(TimestampParseError::Other("unsupported non-UTC timestamp, enable the `time` feature in `twitch_types` to enable parsing these"));
                 };
                 if 2 != partial_time
                     .chars()
@@ -263,7 +263,7 @@ impl TimestampRef {
                 let utc = self.to_utc();
                 return Ok(std::borrow::Cow::Owned(utc.try_into()?));
             }
-            panic!("non `Z` timestamps are not possible to use without the `time` feature enabled for `twitch_api2`")
+            panic!("non `Z` timestamps are not possible to use without the `time` feature enabled for `twitch_types`")
         }
     }
 
