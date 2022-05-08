@@ -48,6 +48,6 @@ eventsub = []
 deny_unknown_fields = []
 
 [package.metadata.docs.rs]
-features = ["all", "unsupported", "_all"]
+all-features = true
 rustc-args = ["--cfg", "nightly"]
 rustdoc-args = ["--cfg", "nightly"]
