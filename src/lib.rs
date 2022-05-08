@@ -279,7 +279,9 @@ impl TimestampRef {
     /// assert!(time2020.is_before(&time2021));
     /// ```
     pub fn is_before<T>(&self, other: &T) -> bool
-    where Self: PartialOrd<T> {
+    where
+        Self: PartialOrd<T>,
+    {
         self < other
     }
 
@@ -389,7 +391,9 @@ impl PartialOrd<time::OffsetDateTime> for Timestamp {
 #[cfg(feature = "time")]
 #[cfg_attr(nightly, doc(cfg(feature = "time")))]
 impl PartialEq<time::OffsetDateTime> for TimestampRef {
-    fn eq(&self, other: &time::OffsetDateTime) -> bool { &self.to_utc() == other }
+    fn eq(&self, other: &time::OffsetDateTime) -> bool {
+        &self.to_utc() == other
+    }
 }
 
 #[cfg(feature = "time")]
@@ -488,7 +492,9 @@ impl EmoteIdRef {
     }
 
     /// Create a [`EmoteUrlBuilder`] for this emote
-    pub fn url(&self) -> EmoteUrlBuilder<'_> { EmoteUrlBuilder::new(self) }
+    pub fn url(&self) -> EmoteUrlBuilder<'_> {
+        EmoteUrlBuilder::new(self)
+    }
 }
 
 /// Emote url template
@@ -506,7 +512,9 @@ pub enum EmoteAnimationSetting {
 }
 
 impl std::fmt::Display for EmoteAnimationSetting {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.serialize(f)
+    }
 }
 
 /// Background themes available for an emote.
@@ -520,11 +528,15 @@ pub enum EmoteThemeMode {
 }
 
 impl Default for EmoteThemeMode {
-    fn default() -> Self { Self::Light }
+    fn default() -> Self {
+        Self::Light
+    }
 }
 
 impl std::fmt::Display for EmoteThemeMode {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.serialize(f)
+    }
 }
 
 /// Scales available for an emote.
@@ -542,11 +554,15 @@ pub enum EmoteScale {
 }
 
 impl Default for EmoteScale {
-    fn default() -> Self { Self::Size1_0 }
+    fn default() -> Self {
+        Self::Size1_0
+    }
 }
 
 impl std::fmt::Display for EmoteScale {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.serialize(f)
+    }
 }
 
 /// Builder for [emote URLs](https://dev.twitch.tv/docs/irc/emotes#emote-cdn-url-format).
@@ -739,7 +755,9 @@ pub enum SubscriptionTier {
 
 impl Serialize for SubscriptionTier {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where S: serde::Serializer {
+    where
+        S: serde::Serializer,
+    {
         serializer.serialize_str(match self {
             SubscriptionTier::Tier1 => "1000",
             SubscriptionTier::Tier2 => "2000",
@@ -766,7 +784,9 @@ pub enum BroadcasterType {
 
 impl Serialize for BroadcasterType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where S: serde::Serializer {
+    where
+        S: serde::Serializer,
+    {
         serializer.serialize_str(match self {
             BroadcasterType::Partner => "partner",
             BroadcasterType::Affiliate => "affiliate",
@@ -794,7 +814,9 @@ pub enum UserType {
 
 impl Serialize for UserType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where S: serde::Serializer {
+    where
+        S: serde::Serializer,
+    {
         serializer.serialize_str(match self {
             UserType::Staff => "staff",
             UserType::Admin => "admin",
