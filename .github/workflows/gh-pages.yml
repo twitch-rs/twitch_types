@@ -1,6 +1,6 @@
 name: github pages
 env:
-  CI_TWITCH_TYPES_FEATURES: "twitch_oauth2/all twitch_oauth2/mock_api all unsupported deny_unknown_fields _all"
+  CI_TWITCH_TYPES_FEATURES: ""
   RUSTDOCFLAGS: "-Z unstable-options --cfg nightly"
   RUSTFLAGS: "--cfg nightly"
 on:
