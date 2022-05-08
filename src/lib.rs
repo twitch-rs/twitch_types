@@ -4,22 +4,31 @@
 //! Twitch types
 
 mod basic;
+// cc: https://github.com/rust-lang/rust/issues/83428, can't use glob imports and keep the modules private
 #[cfg(feature = "emote")]
-mod emote;
+/// types for emotes
+pub mod emote;
 #[cfg(feature = "eventsub")]
-mod eventsub;
+/// types for eventsub related things
+pub mod eventsub;
 #[cfg(feature = "goal")]
-mod goal;
+/// types for goals
+pub mod goal;
 #[cfg(feature = "moderation")]
-mod moderation;
+/// types for moderation
+pub mod moderation;
 #[cfg(feature = "points")]
-mod points;
+/// types for points
+pub mod points;
 #[cfg(feature = "stream")]
-mod stream;
+/// types for stream related things
+pub mod stream;
 #[cfg(feature = "timestamp")]
-mod time;
+/// types for time
+pub mod time;
 #[cfg(feature = "user")]
-mod user;
+/// types for user related things
+pub mod user;
 
 pub use basic::*;
 

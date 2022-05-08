@@ -29,10 +29,6 @@ impl Serialize for BroadcasterType {
     }
 }
 
-/// A Hype Train ID
-#[aliri_braid::braid(serde)]
-pub struct HypeTrainId;
-
 /// User types: "staff", "admin", "global_mod", or "".
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 pub enum UserType {
