@@ -1,5 +1,5 @@
 /// RFC3339 timestamp
-#[aliri_braid::braid(serde, validator)]
+#[aliri_braid::braid(serde, validator, ord = "omit")]
 pub struct Timestamp;
 
 impl aliri_braid::Validator for Timestamp {
