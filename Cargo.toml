@@ -2,7 +2,7 @@
 name = "twitch_types"
 version = "0.2.0"
 edition = "2021"
-repository = "https://github.com/Emilgardis/twitch_types"
+repository = "https://github.com/twitch-rs/twitch_types"
 license = "MIT OR Apache-2.0"
 description = "common types for Twitch"
 keywords = ["twitch", "api"]
