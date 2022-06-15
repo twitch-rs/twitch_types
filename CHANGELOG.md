@@ -4,13 +4,17 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/Emilgardis/twitch_types/compare/v0.2.0...Unreleased)
+### Changed
+
+* Move to new org `twitch-rs`
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.2.0...Unreleased)
 
 ## [v0.2.0] - 2022-05-08
 
 * Place types behind features to provide more granularity to the selections.
 
-[Commits](https://github.com/Emilgardis/twitch_types/compare/v0.1.0...v0.2.0)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.1.0...v0.2.0)
 
 ## [v0.1.0] - 2022-05-08
 
