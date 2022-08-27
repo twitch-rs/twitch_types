@@ -20,6 +20,10 @@
     `StreamId::new`, `StreamSegmentId::new`, `TagId::new`, `TeamId::new`, `VideoId::new`,
     `Timestamp::new` and `Timestamp::new_unchecked` now take a owned `String` instead of `impl Into<String>`
 
+### Added
+
+* Added `CharityCampaignId`
+
 ## [v0.2.0] - 2022-05-08
 
 * Place types behind features to provide more granularity to the selections.

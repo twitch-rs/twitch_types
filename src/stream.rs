@@ -28,6 +28,10 @@ pub struct StreamSegmentId;
 #[aliri_braid::braid(serde)]
 pub struct HypeTrainId;
 
+/// A Charity Campaign ID
+#[aliri_braid::braid(serde)]
+pub struct CharityCampaignId;
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
