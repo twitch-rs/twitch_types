@@ -245,9 +245,7 @@ impl TimestampRef {
     /// assert!(time2020.is_before(&time2021));
     /// ```
     pub fn is_before<T>(&self, other: &T) -> bool
-    where
-        Self: PartialOrd<T>,
-    {
+    where Self: PartialOrd<T> {
         self < other
     }
 
@@ -357,9 +355,7 @@ impl PartialOrd<time::OffsetDateTime> for Timestamp {
 #[cfg(feature = "time")]
 #[cfg_attr(nightly, doc(cfg(feature = "time")))]
 impl PartialEq<time::OffsetDateTime> for TimestampRef {
-    fn eq(&self, other: &time::OffsetDateTime) -> bool {
-        &self.to_utc() == other
-    }
+    fn eq(&self, other: &time::OffsetDateTime) -> bool { &self.to_utc() == other }
 }
 
 #[cfg(feature = "time")]
