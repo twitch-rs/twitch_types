@@ -1,5 +1,5 @@
 /// RFC3339 timestamp
-#[aliri_braid::braid(serde, validator)]
+#[aliri_braid::braid(serde, validator, ord = "omit")]
 pub struct Timestamp;
 
 impl aliri_braid::Validator for Timestamp {
@@ -212,9 +212,9 @@ impl TimestampRef {
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::new("2021-07-01T13:37:00Z").unwrap();
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z")?;
     /// assert_eq!(time.normalize()?.as_ref(), &time);
-    /// let time2 = Timestamp::new("2021-07-01T13:37:00-01:00").unwrap();
+    /// let time2 = Timestamp::try_from("2021-07-01T13:37:00-01:00")?;
     /// assert_ne!(time2.normalize()?.as_ref(), &time2);
     /// # Ok::<(), std::boxed::Box<dyn std::error::Error + 'static>>(())
     /// ```
@@ -240,8 +240,8 @@ impl TimestampRef {
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time2021 = Timestamp::new("2021-07-01T13:37:00Z").unwrap();
-    /// let time2020 = Timestamp::new("2020-07-01T13:37:00Z").unwrap();
+    /// let time2021 = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// let time2020 = Timestamp::try_from("2020-07-01T13:37:00Z").unwrap();
     /// assert!(time2020.is_before(&time2021));
     /// ```
     pub fn is_before<T>(&self, other: &T) -> bool
@@ -256,9 +256,9 @@ impl TimestampRef {
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::new("2021-07-01T13:37:00Z").unwrap();
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
     /// assert_eq!(time.to_day().as_str(), "2021-07-01T00:00:00Z")
-    /// ```  
+    /// ```
     pub fn to_day(&self) -> Timestamp {
         let mut c = self.to_owned();
         c.set_time(0, 0, 0);
@@ -384,13 +384,13 @@ mod tests {
 
     #[test]
     pub fn time_test() {
-        let mut time1 = Timestamp::new("2021-11-11T10:00:00Z").unwrap();
+        let mut time1 = Timestamp::try_from("2021-11-11T10:00:00Z").unwrap();
         time1.set_time(10, 0, 32);
-        let time2 = Timestamp::new("2021-11-10T10:00:00Z").unwrap();
+        let time2 = Timestamp::try_from("2021-11-10T10:00:00Z").unwrap();
         assert!(time2.is_before(&time1));
         dbg!(time1.normalize().unwrap());
         #[cfg(feature = "time")]
-        let time = Timestamp::new("2021-11-11T13:37:00-01:00").unwrap();
+        let time = Timestamp::try_from("2021-11-11T13:37:00-01:00").unwrap();
         #[cfg(feature = "time")]
         dbg!(time.normalize().unwrap());
     }
