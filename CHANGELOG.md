@@ -4,11 +4,15 @@
 
 ## [Unreleased] - ReleaseDate
 
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.0...Unreleased)
+
+## [v0.3.0] - 2022-08-27
+
 ### Changed
 
 * Move to new org `twitch-rs`
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.2.0...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.2.0...v0.3.0)
 
 ### Breaking
 
