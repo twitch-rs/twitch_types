@@ -33,7 +33,7 @@ pub struct HypeTrainId;
 pub struct CharityCampaignId;
 
 /// A game or category as defined by Twitch
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TwitchCategory {
@@ -78,7 +78,7 @@ impl Serialize for SubscriptionTier {
 }
 
 /// Period during which the video was created
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum VideoPeriod {
     /// Filter by all. Effectively a no-op

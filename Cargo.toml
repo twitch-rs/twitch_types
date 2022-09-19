@@ -47,6 +47,9 @@ eventsub = []
 
 deny_unknown_fields = []
 
+[workspace]
+members = ["xtask"]
+
 [package.metadata.docs.rs]
 all-features = true
 rustc-args = ["--cfg", "nightly"]
