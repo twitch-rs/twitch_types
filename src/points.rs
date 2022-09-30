@@ -108,7 +108,7 @@ pub enum PollStatus {
 
 // FIXME: Prediction status has different name depending on if returned from helix or eventsub. See https://twitch.uservoice.com/forums/310213-developers/suggestions/43402197
 /// Status of the Prediction
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(rename_all = "UPPERCASE")]
 #[non_exhaustive]
@@ -128,7 +128,7 @@ pub enum PredictionStatus {
 }
 
 /// Outcome for the Prediction
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct PredictionOutcome {
@@ -148,7 +148,7 @@ pub struct PredictionOutcome {
 
 // FIXME: eventsub adds prefix `user_*`. See https://discord.com/channels/325552783787032576/326772207844065290/842359030252437514
 /// Users who were the top predictors.
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct PredictionTopPredictors {
