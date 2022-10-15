@@ -14,6 +14,12 @@
 <span id="14">14</span>
 <span id="15">15</span>
 <span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
 </pre><pre class="rust"><code><span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="doccomment">/// A Creator Goal ID
@@ -22,13 +28,19 @@
 
 <span class="doccomment">/// Type of creator goal
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>CreatorGoalType {
-    <span class="doccomment">/// Creator goal is for followers
+    <span class="doccomment">/// The goal is to increase followers.
     </span>Follower,
-    <span class="doccomment">/// Creator goal is for subscriptions
+    <span class="doccomment">/// The goal is to increase subscriptions. This type shows the net increase or decrease in tier points associated with the subscriptions.
     </span>Subscription,
+    <span class="doccomment">/// The goal is to increase subscriptions. This type shows the net increase or decrease in the number of subscriptions.
+    </span>SubscriptionCount,
+    <span class="doccomment">/// The goal is to increase subscriptions. This type shows only the net increase in tier points associated with the subscriptions (it does not account for users that unsubscribed since the goal started).
+    </span>NewSubscription,
+    <span class="doccomment">/// The goal is to increase subscriptions. This type shows only the net increase in the number of subscriptions (it does not account for users that unsubscribed since the goal started).
+    </span>NewSubscriptionCount,
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_types" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (bf15a9e52 2022-10-14)" ></div></body></html>
