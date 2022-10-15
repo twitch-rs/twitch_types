@@ -4,7 +4,15 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.1...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.2...Unreleased)
+
+## [v0.3.2] - 2022-10-15
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.1...v0.3.2)
+
+### Added
+
+* Added `subscription_count`, `new_subscription` and `new_subscription_count` to creator goals
 
 ## [v0.3.1] - 2022-10-14
 
