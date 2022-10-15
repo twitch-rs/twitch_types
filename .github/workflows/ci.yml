@@ -50,7 +50,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --locked --all-targets --all-features
+          args: --locked --all-targets --all-features --workspace
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
