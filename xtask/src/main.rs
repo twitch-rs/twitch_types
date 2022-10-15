@@ -36,7 +36,11 @@ fn main() -> color_eyre::Result<()> {
                     "gh repo view --json defaultBranchRef --jq .defaultBranchRef.name"
                 )
                 .read()?;
-                if !cmd!(sh, "gh pr view --json labels").read().unwrap_or_default().contains("release") {
+                if !cmd!(sh, "gh pr view --json labels")
+                    .read()
+                    .unwrap_or_default()
+                    .contains("release")
+                {
                     cmd!(sh, "gh pr edit --add-label release").run()?;
                 }
                 let dry_run = sh.var("CI").is_err() || current_branch != default_branch;
@@ -65,7 +69,11 @@ fn main() -> color_eyre::Result<()> {
                     cmd!(sh, "git push origin {tag}").run()?;
                 }
             } else {
-                if cmd!(sh, "gh pr view --json labels").read().unwrap_or_default().contains("release") {
+                if cmd!(sh, "gh pr view --json labels")
+                    .read()
+                    .unwrap_or_default()
+                    .contains("release")
+                {
                     cmd!(sh, "gh pr edit --remove-label release").run()?;
                 }
                 eprintln!("tag exists already, no action needed");
