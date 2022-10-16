@@ -6,6 +6,10 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.2...Unreleased)
 
+### Added
+
+* Added `NamedUserColor` and `HexColor`
+
 ## [v0.3.2] - 2022-10-15
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.1...v0.3.2)

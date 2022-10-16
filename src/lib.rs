@@ -6,6 +6,9 @@
 
 mod basic;
 // cc: https://github.com/rust-lang/rust/issues/83428, can't use glob imports and keep the modules private
+#[cfg(feature = "color")]
+/// types for colors
+pub mod color;
 #[cfg(feature = "emote")]
 /// types for emotes
 pub mod emote;
@@ -33,6 +36,8 @@ pub mod user;
 
 pub use basic::*;
 
+#[cfg(feature = "color")]
+pub use crate::color::*;
 #[cfg(feature = "emote")]
 pub use crate::emote::*;
 #[cfg(feature = "eventsub")]
