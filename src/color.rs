@@ -146,6 +146,14 @@ impl<'a> TryFrom<&'a str> for NamedUserColor<'a> {
     }
 }
 
+impl<'a> From<Cow<'a, HexColorRef>> for NamedUserColor<'a> {
+    fn from(color: Cow<'a, HexColorRef>) -> Self { NamedUserColor::Hex(color) }
+}
+
+impl<'a> From<HexColor> for NamedUserColor<'a> {
+    fn from(color: HexColor) -> Self { NamedUserColor::Hex(color.into()) }
+}
+
 impl std::fmt::Display for NamedUserColor<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
 }
