@@ -49,6 +49,11 @@
 <span id="49">49</span>
 <span id="50">50</span>
 <span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
 </pre><pre class="rust"><code><span class="attribute">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![allow(clippy::extra_unused_lifetimes)]
 #![cfg_attr(nightly, feature(doc_cfg))]
@@ -57,7 +62,10 @@
 
 </span><span class="kw">mod </span>basic;
 <span class="comment">// cc: https://github.com/rust-lang/rust/issues/83428, can&#39;t use glob imports and keep the modules private
-</span><span class="attribute">#[cfg(feature = <span class="string">&quot;emote&quot;</span>)]
+</span><span class="attribute">#[cfg(feature = <span class="string">&quot;color&quot;</span>)]
+</span><span class="doccomment">/// types for colors
+</span><span class="kw">pub mod </span>color;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;emote&quot;</span>)]
 </span><span class="doccomment">/// types for emotes
 </span><span class="kw">pub mod </span>emote;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;eventsub&quot;</span>)]
@@ -84,6 +92,8 @@
 
 <span class="kw">pub use </span>basic::<span class="kw-2">*</span>;
 
+<span class="attribute">#[cfg(feature = <span class="string">&quot;color&quot;</span>)]
+</span><span class="kw">pub use </span><span class="kw">crate</span>::color::<span class="kw-2">*</span>;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;emote&quot;</span>)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::emote::<span class="kw-2">*</span>;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;eventsub&quot;</span>)]
@@ -101,4 +111,4 @@
 <span class="attribute">#[cfg(feature = <span class="string">&quot;user&quot;</span>)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::user::<span class="kw-2">*</span>;
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_types" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (bf15a9e52 2022-10-14)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_types" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (b8c35ca26 2022-10-15)" ></div></body></html>
