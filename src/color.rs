@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 pub struct HexColor;
 
 /// Colors a user can have
-#[derive(Debug, PartialEq, Eq, Deserialize)]
+#[derive(Debug, PartialEq, Eq, Deserialize, Clone)]
 #[serde(field_identifier, rename_all = "snake_case")]
 pub enum NamedUserColor<'a> {
     /// Blue
