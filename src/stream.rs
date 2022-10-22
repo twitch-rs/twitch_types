@@ -20,6 +20,10 @@ pub struct TeamId;
 #[aliri_braid::braid(serde)]
 pub struct VideoId;
 
+/// A clip ID
+#[aliri_braid::braid(serde)]
+pub struct ClipId;
+
 /// A Stream Segment ID.
 #[aliri_braid::braid(serde)]
 pub struct StreamSegmentId;
