@@ -6,6 +6,10 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.5...Unreleased)
 
+### Added
+
+* Added `IntoCow` trait to easily take braids to be converted into `Cow`s
+
 ### Changed
 
 * Added `impl From<&'a Owned> for &'a Ref` and `impl<'a> From<&'a Owned> for Cow<'a, Ref>` for all braids
