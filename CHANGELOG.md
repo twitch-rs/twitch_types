@@ -6,6 +6,10 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.5...Unreleased)
 
+### Changed
+
+* Added `impl From<&'a Owned> for &'a Ref` and `impl<'a> From<&'a Owned> for Cow<'a, Ref>` for all braids
+
 ## [v0.3.5] - 2022-10-22
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.4...v0.3.5)

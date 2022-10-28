@@ -4,6 +4,30 @@
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
 //! Twitch types
 
+macro_rules! impl_extra {
+    ($owned:path, $ref:path) => {
+        impl $ref {
+            /// Get a
+            #[doc = concat!("[`Cow<'_, ", stringify!($ref), ">`](std::borrow::Cow::Borrowed)")]
+            pub fn as_cow<'a>(&'a self) -> ::std::borrow::Cow<'a, $ref> {
+                self.into()
+            }
+        }
+
+        impl<'a> From<&'a $owned> for &'a $ref {
+            fn from(owned: &'a $owned) -> Self {
+                &*owned
+            }
+        }
+
+        impl<'a> From<&'a $owned> for ::std::borrow::Cow<'a, $ref> {
+            fn from(owned: &'a $owned) -> Self {
+                ::std::borrow::Cow::Borrowed(&*owned)
+            }
+        }
+    };
+}
+
 mod basic;
 // cc: https://github.com/rust-lang/rust/issues/83428, can't use glob imports and keep the modules private
 #[cfg(feature = "color")]

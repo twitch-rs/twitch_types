@@ -6,6 +6,8 @@ use serde::{Deserialize, Serialize};
 #[aliri_braid::braid(serde)]
 pub struct HexColor;
 
+impl_extra!(HexColor, HexColorRef);
+
 /// Colors a user can have
 #[derive(Debug, PartialEq, Eq, Deserialize, Clone)]
 #[serde(field_identifier, rename_all = "snake_case")]

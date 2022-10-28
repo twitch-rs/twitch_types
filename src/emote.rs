@@ -4,13 +4,19 @@ use serde::{Deserialize, Serialize};
 #[aliri_braid::braid(serde)]
 pub struct BadgeSetId;
 
+impl_extra!(BadgeSetId, BadgeSetIdRef);
+
 /// A channel chat badge ID
 #[aliri_braid::braid(serde)]
 pub struct ChatBadgeId;
 
+impl_extra!(ChatBadgeId, ChatBadgeIdRef);
+
 /// A chat Emote ID
 #[aliri_braid::braid(serde)]
 pub struct EmoteId;
+
+impl_extra!(EmoteId, EmoteIdRef);
 
 impl EmoteIdRef {
     /// Generates url for this emote.
@@ -213,6 +219,8 @@ impl EmoteUrlBuilder<'_> {
 /// An Emote Set ID
 #[aliri_braid::braid(serde)]
 pub struct EmoteSetId;
+
+impl_extra!(EmoteSetId, EmoteSetIdRef);
 
 /// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]

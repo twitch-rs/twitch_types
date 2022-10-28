@@ -2,6 +2,8 @@
 #[aliri_braid::braid(serde, validator, ord = "omit")]
 pub struct Timestamp;
 
+impl_extra!(Timestamp, TimestampRef);
+
 impl aliri_braid::Validator for Timestamp {
     type Error = TimestampParseError;
 

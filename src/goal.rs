@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 #[aliri_braid::braid(serde)]
 pub struct CreatorGoalId;
 
+impl_extra!(CreatorGoalId, CreatorGoalIdRef);
+
 /// Type of creator goal
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
