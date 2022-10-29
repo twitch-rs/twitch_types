@@ -4,37 +4,55 @@ use serde::{Deserialize, Serialize};
 #[aliri_braid::braid(serde)]
 pub struct StreamId;
 
+impl_extra!(StreamId, StreamIdRef);
+
 /// A game or category ID
 #[aliri_braid::braid(serde)]
 pub struct CategoryId;
+
+impl_extra!(CategoryId, CategoryIdRef);
 
 /// A tag ID
 #[aliri_braid::braid(serde)]
 pub struct TagId;
 
+impl_extra!(TagId, TagIdRef);
+
 /// A Team ID
 #[aliri_braid::braid(serde)]
 pub struct TeamId;
+
+impl_extra!(TeamId, TeamIdRef);
 
 /// A video ID
 #[aliri_braid::braid(serde)]
 pub struct VideoId;
 
+impl_extra!(VideoId, VideoIdRef);
+
 /// A clip ID
 #[aliri_braid::braid(serde)]
 pub struct ClipId;
+
+impl_extra!(ClipId, ClipIdRef);
 
 /// A Stream Segment ID.
 #[aliri_braid::braid(serde)]
 pub struct StreamSegmentId;
 
+impl_extra!(StreamSegmentId, StreamSegmentIdRef);
+
 /// A Hype Train ID
 #[aliri_braid::braid(serde)]
 pub struct HypeTrainId;
 
+impl_extra!(HypeTrainId, HypeTrainIdRef);
+
 /// A Charity Campaign ID
 #[aliri_braid::braid(serde)]
 pub struct CharityCampaignId;
+
+impl_extra!(CharityCampaignId, CharityCampaignIdRef);
 
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]

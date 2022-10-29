@@ -4,7 +4,19 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.5...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.6...Unreleased)
+
+## [v0.3.6] - 2022-10-28
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.5...v0.3.6)
+
+### Added
+
+* Added `IntoCow` trait to easily take braids to be converted into `Cow`s
+
+### Changed
+
+* Added `impl From<&'a Owned> for &'a Ref` and `impl<'a> From<&'a Owned> for Cow<'a, Ref>` for all braids
 
 ## [v0.3.5] - 2022-10-22
 

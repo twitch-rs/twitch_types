@@ -6,25 +6,37 @@ use crate::{DisplayName, UserId, UserName};
 #[aliri_braid::braid(serde)]
 pub struct RewardId;
 
+impl_extra!(RewardId, RewardIdRef);
+
 /// A reward redemption ID.
 #[aliri_braid::braid(serde)]
 pub struct RedemptionId;
+
+impl_extra!(RedemptionId, RedemptionIdRef);
 
 /// A poll ID
 #[aliri_braid::braid(serde)]
 pub struct PollId;
 
+impl_extra!(PollId, PollIdRef);
+
 /// A poll choice ID
 #[aliri_braid::braid(serde)]
 pub struct PollChoiceId;
+
+impl_extra!(PollChoiceId, PollChoiceIdRef);
 
 /// A prediction ID
 #[aliri_braid::braid(serde)]
 pub struct PredictionId;
 
+impl_extra!(PredictionId, PredictionIdRef);
+
 /// A prediction choice ID
 #[aliri_braid::braid(serde)]
 pub struct PredictionOutcomeId;
+
+impl_extra!(PredictionOutcomeId, PredictionOutcomeIdRef);
 
 /// Reward redemption max
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 #[aliri_braid::braid(serde)]
 pub struct BlockedTermId;
 
+impl_extra!(BlockedTermId, BlockedTermIdRef);
+
 /// Status of a message that is or was in AutoMod queue
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -23,3 +25,5 @@ pub enum AutomodStatus {
 /// A message ID
 #[aliri_braid::braid(serde)]
 pub struct MsgId;
+
+impl_extra!(MsgId, MsgIdRef);
