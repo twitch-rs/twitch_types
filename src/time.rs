@@ -4,6 +4,27 @@ pub struct Timestamp;
 
 impl_extra!(validated, Timestamp, TimestampRef, TimestampParseError);
 
+impl<'a> arbitrary::Arbitrary<'a> for Timestamp {
+    fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
+        let year = u.int_in_range(0..=9999)?;
+        let month = u.int_in_range(1..=12)?;
+        const M_D: [u8; 12] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        let day = u.int_in_range(1..=M_D[month as usize - 1])?;
+        let hour = u.int_in_range(0..=23)?;
+        let minute = u.int_in_range(0..=59)?;
+        let second = u.int_in_range(0..=59)?;
+        let millis = if bool::arbitrary(u)? {
+            let millis = u.int_in_range(0..=999)?;
+            format!(".{millis:03}")
+        } else {
+            "".to_owned()
+        };
+        format!("{year:04}-{month:02}-{day:02}T{hour:02}:{minute:02}:{second:02}{millis}Z")
+            .parse()
+            .map_err(|_| arbitrary::Error::IncorrectFormat)
+    }
+}
+
 impl aliri_braid::Validator for Timestamp {
     type Error = TimestampParseError;
 

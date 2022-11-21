@@ -6,7 +6,19 @@ use serde::{Deserialize, Serialize};
 #[aliri_braid::braid(serde)]
 pub struct HexColor;
 
-impl_extra!(HexColor, HexColorRef);
+impl_extra!(no_arb, HexColor, HexColorRef);
+
+#[cfg(feature = "arbitrary")]
+impl<'a> arbitrary::Arbitrary<'a> for HexColor {
+    fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
+        let mut buff = [0u8; 3];
+        u.fill_buffer(&mut buff)?;
+        Ok(HexColor::from(format!(
+            "#{:02X}{:02X}{:02X}",
+            buff[0], buff[1], buff[2]
+        )))
+    }
+}
 
 /// Colors a user can have
 #[derive(Debug, PartialEq, Eq, Deserialize, Clone)]
@@ -45,6 +57,67 @@ pub enum NamedUserColor<'a> {
     /// A hex color
     #[serde(borrow = "'a")]
     Hex(Cow<'a, HexColorRef>),
+}
+
+#[cfg(feature = "arbitrary")]
+impl<'a> arbitrary::Arbitrary<'a> for NamedUserColor<'a> {
+    fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
+        Ok(match u.int_in_range(0..=15)? {
+            0 => NamedUserColor::Blue,
+            1 => NamedUserColor::BlueViolet,
+            2 => NamedUserColor::CadetBlue,
+            3 => NamedUserColor::Chocolate,
+            4 => NamedUserColor::Coral,
+            5 => NamedUserColor::DodgerBlue,
+            6 => NamedUserColor::Firebrick,
+            7 => NamedUserColor::GoldenRod,
+            8 => NamedUserColor::Green,
+            9 => NamedUserColor::HotPink,
+            10 => NamedUserColor::OrangeRed,
+            11 => NamedUserColor::Red,
+            12 => NamedUserColor::SeaGreen,
+            13 => NamedUserColor::SpringGreen,
+            14 => NamedUserColor::YellowGreen,
+            15 => NamedUserColor::Hex(arbitrary::Arbitrary::arbitrary(u)?),
+            _ => unreachable!(),
+        })
+    }
+
+    fn size_hint(depth: usize) -> (usize, Option<usize>) {
+        arbitrary::size_hint::or_all(&[
+            arbitrary::size_hint::and_all(&[]),
+            <Cow<'a, HexColorRef> as arbitrary::Arbitrary>::size_hint(depth),
+        ])
+    }
+}
+
+#[cfg(feature = "zerofrom")]
+impl<'zf, 'zf_inner> zerofrom::ZeroFrom<'zf, NamedUserColor<'zf_inner>> for NamedUserColor<'zf> {
+    fn zero_from(this: &'zf NamedUserColor<'zf_inner>) -> Self {
+        match *this {
+            NamedUserColor::Blue => NamedUserColor::Blue,
+            NamedUserColor::BlueViolet => NamedUserColor::BlueViolet,
+            NamedUserColor::CadetBlue => NamedUserColor::CadetBlue,
+            NamedUserColor::Chocolate => NamedUserColor::Chocolate,
+            NamedUserColor::Coral => NamedUserColor::Coral,
+            NamedUserColor::DodgerBlue => NamedUserColor::DodgerBlue,
+            NamedUserColor::Firebrick => NamedUserColor::Firebrick,
+            NamedUserColor::GoldenRod => NamedUserColor::GoldenRod,
+            NamedUserColor::Green => NamedUserColor::Green,
+            NamedUserColor::HotPink => NamedUserColor::HotPink,
+            NamedUserColor::OrangeRed => NamedUserColor::OrangeRed,
+            NamedUserColor::Red => NamedUserColor::Red,
+            NamedUserColor::SeaGreen => NamedUserColor::SeaGreen,
+            NamedUserColor::SpringGreen => NamedUserColor::SpringGreen,
+            NamedUserColor::YellowGreen => NamedUserColor::YellowGreen,
+            NamedUserColor::Hex(ref __binding_0) => {
+                NamedUserColor::Hex(<Cow<'zf, HexColorRef> as zerofrom::ZeroFrom<
+                    'zf,
+                    Cow<'zf_inner, HexColorRef>,
+                >>::zero_from(__binding_0))
+            }
+        }
+    }
 }
 
 impl<'a> NamedUserColor<'a> {
@@ -180,5 +253,5 @@ fn color() {
     assert_eq!(
         check.iter().map(|c| c.to_string()).collect::<Vec<_>>(),
         colors
-    )
+    );
 }

@@ -38,6 +38,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "arbitrary"
+version = "1.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "29d47fbf90d5149a107494b15a7dc8d69b351be2db3bb9691740e88ec17fd880"
+
+[[package]]
 name = "atty"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -498,6 +504,7 @@ name = "twitch_types"
 version = "0.3.6"
 dependencies = [
  "aliri_braid",
+ "arbitrary",
  "displaydoc",
  "serde",
  "serde_derive",
@@ -506,6 +513,7 @@ dependencies = [
  "time",
  "tracing",
  "typed-builder",
+ "zerofrom",
 ]
 
 [[package]]
@@ -594,3 +602,9 @@ dependencies = [
  "serde_json",
  "xshell",
 ]
+
+[[package]]
+name = "zerofrom"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "79e9355fccf72b04b7deaa99ce7a0f6630530acf34045391b74460fcd714de54"

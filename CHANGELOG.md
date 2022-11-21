@@ -9,6 +9,7 @@
 ### Added
 
 * Added `igdb_id` to TwitchCategory
+* Added ZeroFrom and Arbitrary impls for most types behind feature flag `zerofrom` and `arbitrary`
 
 ## [v0.3.6] - 2022-10-28
 
