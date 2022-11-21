@@ -267,7 +267,7 @@ impl TimestampRef {
     /// let time2020 = Timestamp::try_from("2020-07-01T13:37:00Z").unwrap();
     /// assert!(time2020.is_before(&time2021));
     /// ```
-    pub fn is_before<T>(&self, other: &T) -> bool
+    pub fn is_before<T: ?Sized>(&self, other: &T) -> bool
     where Self: PartialOrd<T> {
         self < other
     }
@@ -280,12 +280,105 @@ impl TimestampRef {
     /// use twitch_types::Timestamp;
     ///
     /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
-    /// assert_eq!(time.to_day().as_str(), "2021-07-01T00:00:00Z")
+    /// assert_eq!(time.to_day().as_str(), "2021-07-01T00:00:00Z");
     /// ```
     pub fn to_day(&self) -> Timestamp {
         let mut c = self.to_owned();
         c.set_time(0, 0, 0);
         c
+    }
+
+    /// Get the year
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.year(), "2021");
+    /// ```
+    pub fn year(&self) -> &str { &self.0[0..4] }
+
+    /// Get the month
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.month(), "07");
+    /// ```
+    pub fn month(&self) -> &str { &self.0[5..7] }
+
+    /// Get the day
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.day(), "01");
+    /// ```
+    pub fn day(&self) -> &str { &self.0[8..10] }
+
+    /// Get the hour
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.hour(), "13");
+    /// ```
+    pub fn hour(&self) -> &str { &self.0[11..13] }
+
+    /// Get the minute
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.minute(), "37");
+    /// ```
+    pub fn minute(&self) -> &str { &self.0[14..16] }
+
+    /// Get the second
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.second(), "00");
+    /// ```
+    pub fn second(&self) -> &str { &self.0[17..19] }
+
+    /// Get the millis
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00.123Z").unwrap();
+    /// assert_eq!(time.millis(), Some("123"));
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.millis(), None);
+    /// ```
+    pub fn millis(&self) -> Option<&str> {
+        if self.0[19..].contains('.') {
+            let sub = &self.0[20..];
+            Some(&sub[..sub.find(|c: char| !c.is_ascii_digit()).unwrap_or(sub.len())])
+        } else {
+            None
+        }
     }
 }
 
