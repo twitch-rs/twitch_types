@@ -54,6 +54,12 @@ pub struct CharityCampaignId;
 
 impl_extra!(CharityCampaignId, CharityCampaignIdRef);
 
+/// A [IGDB](https://www.igdb.com/) ID
+#[aliri_braid::braid(serde)]
+pub struct IgdbId;
+
+impl_extra!(IgdbId, IgdbIdRef);
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -65,6 +71,11 @@ pub struct TwitchCategory {
     pub id: CategoryId,
     /// Game name.
     pub name: String,
+    /// The ID that IGDB uses to identify this game.
+    ///
+    /// If the IGDB ID is not available to Twitch, this field is set to an empty string.
+    #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
+    pub igdb_id: Option<IgdbId>,
 }
 
 /// Subscription tiers

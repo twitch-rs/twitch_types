@@ -163,6 +163,47 @@ pub use crate::time::*;
 #[cfg(feature = "user")]
 pub use crate::user::*;
 
+#[cfg(feature = "stream")]
+fn deserialize_none_from_empty_string<'de, D, S>(deserializer: D) -> Result<Option<S>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+    S: serde::Deserialize<'de>, {
+    use serde::de::IntoDeserializer;
+    struct Inner<S>(std::marker::PhantomData<S>);
+    impl<'de, S> serde::de::Visitor<'de> for Inner<S>
+    where S: serde::Deserialize<'de>
+    {
+        type Value = Option<S>;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            formatter.write_str("any string")
+        }
+
+        fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+        where E: serde::de::Error {
+            match value {
+                "" => Ok(None),
+                v => S::deserialize(v.into_deserializer()).map(Some),
+            }
+        }
+
+        fn visit_string<E>(self, value: String) -> Result<Self::Value, E>
+        where E: serde::de::Error {
+            match &*value {
+                "" => Ok(None),
+                v => S::deserialize(v.into_deserializer()).map(Some),
+            }
+        }
+
+        fn visit_unit<E>(self) -> Result<Self::Value, E>
+        where E: serde::de::Error {
+            Ok(None)
+        }
+    }
+
+    deserializer.deserialize_any(Inner(<_>::default()))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
