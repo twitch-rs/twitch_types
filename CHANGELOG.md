@@ -6,6 +6,10 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.6...Unreleased)
 
+### Added
+
+* Added `igdb_id` to TwitchCategory
+
 ## [v0.3.6] - 2022-10-28
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.5...v0.3.6)
