@@ -210,6 +210,9 @@
 <a href="#210" id="210">210</a>
 <a href="#211" id="211">211</a>
 <a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
 </pre><pre class="rust"><code><span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="doccomment">/// A Stream ID
@@ -285,8 +288,11 @@
     </span><span class="kw">pub </span>name: String,
     <span class="doccomment">/// The ID that IGDB uses to identify this game.
     ///
-    /// If the IGDB ID is not available to Twitch, this field is set to an empty string.
-    </span><span class="attr">#[serde(deserialize_with = <span class="string">&quot;crate::deserialize_none_from_empty_string&quot;</span>)]
+    /// An empty value may indicate the endpoint does not return an id or that the category/game is not available on IGDB
+    </span><span class="attr">#[serde(
+        deserialize_with = <span class="string">&quot;crate::deserialize_none_from_empty_string&quot;</span>,
+        default
+    )]
     </span><span class="kw">pub </span>igdb_id: <span class="prelude-ty">Option</span>&lt;IgdbId&gt;,
 }
 
