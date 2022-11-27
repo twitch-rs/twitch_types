@@ -73,8 +73,11 @@ pub struct TwitchCategory {
     pub name: String,
     /// The ID that IGDB uses to identify this game.
     ///
-    /// If the IGDB ID is not available to Twitch, this field is set to an empty string.
-    #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
+    /// An empty value may indicate the endpoint does not return an id or that the category/game is not available on IGDB
+    #[serde(
+        deserialize_with = "crate::deserialize_none_from_empty_string",
+        default
+    )]
     pub igdb_id: Option<IgdbId>,
 }
 
