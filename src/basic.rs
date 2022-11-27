@@ -2,7 +2,7 @@
 #[aliri_braid::braid(serde)]
 pub struct UserId;
 
-impl_extra!(UserId, UserIdRef);
+impl_extra!(numeric, UserId, UserIdRef);
 
 /// A users display name
 #[aliri_braid::braid(serde)]
@@ -14,7 +14,7 @@ impl_extra!(DisplayName, DisplayNameRef);
 #[aliri_braid::braid(serde)]
 pub struct Nickname;
 
-impl_extra!(Nickname, NicknameRef);
+impl_extra!(ascii, Nickname, NicknameRef);
 
 /// A username, also specified as login. Should not be capitalized.
 pub type UserName = Nickname;

@@ -4,6 +4,27 @@ pub struct Timestamp;
 
 impl_extra!(validated, Timestamp, TimestampRef, TimestampParseError);
 
+impl<'a> arbitrary::Arbitrary<'a> for Timestamp {
+    fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
+        let year = u.int_in_range(0..=9999)?;
+        let month = u.int_in_range(1..=12)?;
+        const M_D: [u8; 12] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        let day = u.int_in_range(1..=M_D[month as usize - 1])?;
+        let hour = u.int_in_range(0..=23)?;
+        let minute = u.int_in_range(0..=59)?;
+        let second = u.int_in_range(0..=59)?;
+        let millis = if bool::arbitrary(u)? {
+            let millis = u.int_in_range(0..=999)?;
+            format!(".{millis:03}")
+        } else {
+            "".to_owned()
+        };
+        format!("{year:04}-{month:02}-{day:02}T{hour:02}:{minute:02}:{second:02}{millis}Z")
+            .parse()
+            .map_err(|_| arbitrary::Error::IncorrectFormat)
+    }
+}
+
 impl aliri_braid::Validator for Timestamp {
     type Error = TimestampParseError;
 
@@ -246,7 +267,7 @@ impl TimestampRef {
     /// let time2020 = Timestamp::try_from("2020-07-01T13:37:00Z").unwrap();
     /// assert!(time2020.is_before(&time2021));
     /// ```
-    pub fn is_before<T>(&self, other: &T) -> bool
+    pub fn is_before<T: ?Sized>(&self, other: &T) -> bool
     where Self: PartialOrd<T> {
         self < other
     }
@@ -259,12 +280,105 @@ impl TimestampRef {
     /// use twitch_types::Timestamp;
     ///
     /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
-    /// assert_eq!(time.to_day().as_str(), "2021-07-01T00:00:00Z")
+    /// assert_eq!(time.to_day().as_str(), "2021-07-01T00:00:00Z");
     /// ```
     pub fn to_day(&self) -> Timestamp {
         let mut c = self.to_owned();
         c.set_time(0, 0, 0);
         c
+    }
+
+    /// Get the year
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.year(), "2021");
+    /// ```
+    pub fn year(&self) -> &str { &self.0[0..4] }
+
+    /// Get the month
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.month(), "07");
+    /// ```
+    pub fn month(&self) -> &str { &self.0[5..7] }
+
+    /// Get the day
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.day(), "01");
+    /// ```
+    pub fn day(&self) -> &str { &self.0[8..10] }
+
+    /// Get the hour
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.hour(), "13");
+    /// ```
+    pub fn hour(&self) -> &str { &self.0[11..13] }
+
+    /// Get the minute
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.minute(), "37");
+    /// ```
+    pub fn minute(&self) -> &str { &self.0[14..16] }
+
+    /// Get the second
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.second(), "00");
+    /// ```
+    pub fn second(&self) -> &str { &self.0[17..19] }
+
+    /// Get the millis
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::Timestamp;
+    ///
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00.123Z").unwrap();
+    /// assert_eq!(time.millis(), Some("123"));
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.millis(), None);
+    /// ```
+    pub fn millis(&self) -> Option<&str> {
+        if self.0[19..].contains('.') {
+            let sub = &self.0[20..];
+            Some(&sub[..sub.find(|c: char| !c.is_ascii_digit()).unwrap_or(sub.len())])
+        } else {
+            None
+        }
     }
 }
 
