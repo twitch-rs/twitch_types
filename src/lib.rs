@@ -24,6 +24,123 @@ macro_rules! impl_extra {
 
         impl_extra!(@all, $owned, $ref);
     };
+
+    (ascii, $owned:path, $ref:path) => {
+        impl<'a> From<&'a String> for &'a $ref {
+            fn from(string: &'a String) -> Self {
+                <$ref>::from_str(string.as_str())
+            }
+        }
+
+        #[cfg(feature = "arbitrary")]
+        impl<'a> arbitrary::Arbitrary<'a> for &'a $ref {
+            fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> Result<Self, arbitrary::Error> {
+                let string: &str = <&str as arbitrary::Arbitrary>::arbitrary(u)?;
+                let string = if let Some(i) = string.find(|b: char| !b.is_ascii_alphanumeric()) {
+                    let valid = &string[0..i];
+                    valid
+                } else {
+                    string
+                };
+                if string.is_empty() {
+                    Err(arbitrary::Error::IncorrectFormat)
+                } else {
+                    Ok(string.into())
+                }
+            }
+
+            fn arbitrary_take_rest(u: arbitrary::Unstructured<'a>) -> Result<Self, arbitrary::Error> {
+                let string: &str = <&str as arbitrary::Arbitrary>::arbitrary_take_rest(u)?;
+                if  string.as_bytes().iter().any(|b| !b.is_ascii_alphanumeric())|| string.is_empty() {
+                    Err(arbitrary::Error::IncorrectFormat)
+                } else {
+                    Ok(string.into())
+                }
+            }
+
+            #[inline]
+            fn size_hint(depth: usize) -> (usize, Option<usize>) {
+                <&str as arbitrary::Arbitrary>::size_hint(depth)
+            }
+        }
+
+        #[cfg(feature = "arbitrary")]
+        impl<'a> arbitrary::Arbitrary<'a> for $owned {
+            fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> Result<Self, arbitrary::Error> {
+                <&$ref as arbitrary::Arbitrary>::arbitrary(u).map(Into::into)
+            }
+
+            fn arbitrary_take_rest(u: arbitrary::Unstructured<'a>) -> Result<Self, arbitrary::Error> {
+                <&$ref as arbitrary::Arbitrary>::arbitrary_take_rest(u).map(Into::into)
+            }
+
+            #[inline]
+            fn size_hint(depth: usize) -> (usize, Option<usize>) {
+                <&$ref as arbitrary::Arbitrary>::size_hint(depth)
+            }
+        }
+
+        impl_extra!(@all, $owned, $ref);
+    };
+
+    (numeric, $owned:path, $ref:path) => {
+        impl<'a> From<&'a String> for &'a $ref {
+            fn from(string: &'a String) -> Self {
+                <$ref>::from_str(string.as_str())
+            }
+        }
+
+        #[cfg(feature = "arbitrary")]
+        impl<'a> arbitrary::Arbitrary<'a> for &'a $ref {
+            fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> Result<Self, arbitrary::Error> {
+                let string: &str = <&str as arbitrary::Arbitrary>::arbitrary(u)?;
+                let string = if let Some(i) = string.find(|b: char| !b.is_ascii_digit()) {
+                    let valid = &string[0..i];
+                    valid
+                } else {
+                    string
+                };
+                if string.is_empty() {
+                    Err(arbitrary::Error::IncorrectFormat)
+                } else {
+                    Ok(string.into())
+                }
+            }
+
+            fn arbitrary_take_rest(u: arbitrary::Unstructured<'a>) -> Result<Self, arbitrary::Error> {
+                let string: &str = <&str as arbitrary::Arbitrary>::arbitrary_take_rest(u)?;
+                if  string.as_bytes().iter().any(|b| !b.is_ascii_digit()) || string.is_empty() {
+                    Err(arbitrary::Error::IncorrectFormat)
+                } else {
+                    Ok(string.into())
+                }
+            }
+
+            #[inline]
+            fn size_hint(depth: usize) -> (usize, Option<usize>) {
+                <&str as arbitrary::Arbitrary>::size_hint(depth)
+            }
+        }
+
+        #[cfg(feature = "arbitrary")]
+        impl<'a> arbitrary::Arbitrary<'a> for $owned {
+            fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> Result<Self, arbitrary::Error> {
+                <u32 as arbitrary::Arbitrary>::arbitrary(u).map(|i| format!("{i}").into())
+            }
+
+            fn arbitrary_take_rest(u: arbitrary::Unstructured<'a>) -> Result<Self, arbitrary::Error> {
+                <u32 as arbitrary::Arbitrary>::arbitrary_take_rest(u).map(|i| format!("{i}").into())
+            }
+
+            #[inline]
+            fn size_hint(depth: usize) -> (usize, Option<usize>) {
+                <&$ref as arbitrary::Arbitrary>::size_hint(depth)
+            }
+        }
+
+        impl_extra!(@all, $owned, $ref);
+    };
+
     ($owned:path, $ref:path) => {
         impl<'a> From<&'a String> for &'a $ref {
             fn from(string: &'a String) -> Self {
