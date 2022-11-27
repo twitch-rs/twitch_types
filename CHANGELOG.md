@@ -4,7 +4,11 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.6...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.7...Unreleased)
+
+## [v0.3.7] - 2022-11-27
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.6...v0.3.7)
 
 ### Added
 
