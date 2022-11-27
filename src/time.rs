@@ -4,6 +4,7 @@ pub struct Timestamp;
 
 impl_extra!(validated, Timestamp, TimestampRef, TimestampParseError);
 
+#[cfg(feature = "arbitrary")]
 impl<'a> arbitrary::Arbitrary<'a> for Timestamp {
     fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
         let year = u.int_in_range(0..=9999)?;
