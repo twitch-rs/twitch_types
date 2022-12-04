@@ -96,6 +96,10 @@ impl aliri_braid::Validator for Timestamp {
     }
 }
 
+impl From<std::convert::Infallible> for TimestampParseError {
+    fn from(value: std::convert::Infallible) -> Self { match value {} }
+}
+
 /// Errors that can occur when parsing a timestamp.
 #[derive(Debug, thiserror::Error, displaydoc::Display)]
 #[ignore_extra_doc_attributes]
