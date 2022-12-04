@@ -501,7 +501,7 @@ dependencies = [
 
 [[package]]
 name = "twitch_types"
-version = "0.3.9"
+version = "0.3.10"
 dependencies = [
  "aliri_braid",
  "arbitrary",
