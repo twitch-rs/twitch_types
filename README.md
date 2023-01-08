@@ -13,7 +13,7 @@ You can see current unpublished docs here: [![local-docs]](https://twitch-rs.git
 
 See [examples](./examples) for examples.
 
-[local-docs]: https://img.shields.io/github/workflow/status/twitch-rs/twitch_types/github%20pages/main?label=master%20docs&style=flat-square&event=push
+[local-docs]: https://img.shields.io/github/actions/workflow/status/twitch-rs/twitch_types/gh-pages.yml?label=dev%20docs&style=flat-square&event=push
 
 
 
@@ -31,4 +31,3 @@ Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
 be dual licensed as above, without any additional terms or conditions.
 </sub>
-
