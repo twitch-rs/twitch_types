@@ -7,3 +7,6 @@ reorder_impl_items = true
 edition = "2021"
 newline_style = "Unix"
 format_code_in_doc_comments = true
+normalize_doc_attributes = true
+format_macro_bodies = true
+format_macro_matchers = true
