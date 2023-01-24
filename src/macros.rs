@@ -599,19 +599,19 @@ macro_rules! impl_extra {
         }
 
         impl<'a> crate::IntoCow<'a, $ref> for &'a $ref {
-            fn to_cow(self) -> ::std::borrow::Cow<'a, $ref> {
+            fn into_cow(self) -> ::std::borrow::Cow<'a, $ref> {
                 ::std::borrow::Cow::Borrowed(self)
             }
         }
 
         impl<'a> crate::IntoCow<'a, $ref> for $owned {
-            fn to_cow(self) -> ::std::borrow::Cow<'a, $ref> {
+            fn into_cow(self) -> ::std::borrow::Cow<'a, $ref> {
                 ::std::borrow::Cow::Owned(self)
             }
         }
 
         impl<'a> crate::IntoCow<'a, $ref> for &'a $owned {
-            fn to_cow(self) -> ::std::borrow::Cow<'a, $ref> {
+            fn into_cow(self) -> ::std::borrow::Cow<'a, $ref> {
                 ::std::borrow::Cow::Borrowed(self.as_ref())
             }
         }

@@ -11,7 +11,7 @@ mod macros;
 pub trait IntoCow<'a, Ref: ?Sized>
 where Ref: ToOwned {
     /// Make the cow with proper ownership, muu
-    fn to_cow(self) -> std::borrow::Cow<'a, Ref>
+    fn into_cow(self) -> std::borrow::Cow<'a, Ref>
     where &'a Self: 'a;
 }
 
@@ -22,7 +22,7 @@ where
     &'a R: Into<std::borrow::Cow<'a, R>>,
     R::Owned: Into<std::borrow::Cow<'a, R>>,
 {
-    fn to_cow(self) -> std::borrow::Cow<'a, R> {
+    fn into_cow(self) -> std::borrow::Cow<'a, R> {
         match self {
             std::borrow::Cow::Borrowed(b) => b.into(),
             std::borrow::Cow::Owned(o) => o.into(),
@@ -35,7 +35,7 @@ where
     &'a str: Into<&'a R>,
     R: ToOwned + ?Sized + 'a,
 {
-    fn to_cow(self) -> std::borrow::Cow<'a, R> { std::borrow::Cow::Borrowed(self.into()) }
+    fn into_cow(self) -> std::borrow::Cow<'a, R> { std::borrow::Cow::Borrowed(self.into()) }
 }
 
 impl<'a, R> IntoCow<'a, R> for &'a String
@@ -43,7 +43,7 @@ where
     &'a String: Into<&'a R>,
     R: ToOwned + ?Sized + 'a,
 {
-    fn to_cow(self) -> std::borrow::Cow<'a, R> { std::borrow::Cow::Borrowed(self.into()) }
+    fn into_cow(self) -> std::borrow::Cow<'a, R> { std::borrow::Cow::Borrowed(self.into()) }
 }
 
 impl<'a, R> IntoCow<'a, R> for String
@@ -51,7 +51,7 @@ where
     String: Into<R::Owned>,
     R: ToOwned + ?Sized + 'a,
 {
-    fn to_cow(self) -> std::borrow::Cow<'a, R> { std::borrow::Cow::Owned(self.into()) }
+    fn into_cow(self) -> std::borrow::Cow<'a, R> { std::borrow::Cow::Owned(self.into()) }
 }
 
 mod basic;
@@ -173,7 +173,7 @@ mod tests {
             id: std::borrow::Cow<'a, UserIdRef>,
         }
         let k = K {
-            id: broadcaster_id.to_cow(),
+            id: broadcaster_id.into_cow(),
         };
         matches!(k.id, std::borrow::Cow::Borrowed(_))
     }
