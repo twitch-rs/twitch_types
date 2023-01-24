@@ -1,15 +1,18 @@
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-/// A blocked term ID
-#[aliri_braid::braid(serde)]
-pub struct BlockedTermId;
-
+manual_braid! {
+    /// A blocked term ID
+    pub struct BlockedTermId;
+    pub struct BlockedTermIdRef;
+}
 impl_extra!(BlockedTermId, BlockedTermIdRef);
 
 /// Status of a message that is or was in AutoMod queue
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[serde(rename_all = "UPPERCASE")]
+#[cfg_attr(feature = "serde", serde(rename_all = "UPPERCASE"))]
 #[non_exhaustive]
 pub enum AutomodStatus {
     /// Message has been caught and pending moderation
@@ -22,8 +25,4 @@ pub enum AutomodStatus {
     Expired,
 }
 
-/// A message ID
-#[aliri_braid::braid(serde)]
-pub struct MsgId;
-
-impl_extra!(MsgId, MsgIdRef);
+pub use crate::basic::{MsgId, MsgIdRef};

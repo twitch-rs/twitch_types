@@ -1,21 +1,25 @@
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-/// A Badge set ID
-#[aliri_braid::braid(serde)]
-pub struct BadgeSetId;
-
+manual_braid! {
+    /// A Badge set ID
+    pub struct BadgeSetId;
+    pub struct BadgeSetIdRef;
+}
 impl_extra!(BadgeSetId, BadgeSetIdRef);
 
-/// A channel chat badge ID
-#[aliri_braid::braid(serde)]
-pub struct ChatBadgeId;
-
+manual_braid! {
+    /// A channel chat badge ID
+    pub struct ChatBadgeId;
+    pub struct ChatBadgeIdRef;
+}
 impl_extra!(ChatBadgeId, ChatBadgeIdRef);
 
-/// A chat Emote ID
-#[aliri_braid::braid(serde)]
-pub struct EmoteId;
-
+manual_braid! {
+    /// A chat Emote ID
+    pub struct EmoteId;
+    pub struct EmoteIdRef;
+}
 impl_extra!(EmoteId, EmoteIdRef);
 
 impl EmoteIdRef {
@@ -42,8 +46,9 @@ pub(crate) static EMOTE_V2_URL_TEMPLATE: &str =
     "https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}";
 
 /// Formats for an emote.
-#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
-#[serde(rename_all = "lowercase")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "lowercase"))]
 pub enum EmoteAnimationSetting {
     /// Static
     Static,
@@ -52,12 +57,18 @@ pub enum EmoteAnimationSetting {
 }
 
 impl std::fmt::Display for EmoteAnimationSetting {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            EmoteAnimationSetting::Static => "static",
+            EmoteAnimationSetting::Animated => "animated",
+        })
+    }
 }
 
 /// Background themes available for an emote.
-#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
-#[serde(rename_all = "lowercase")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "lowercase"))]
 pub enum EmoteThemeMode {
     /// Light
     Light,
@@ -70,20 +81,26 @@ impl Default for EmoteThemeMode {
 }
 
 impl std::fmt::Display for EmoteThemeMode {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            EmoteThemeMode::Light => "light",
+            EmoteThemeMode::Dark => "dark",
+        })
+    }
 }
 
 /// Scales available for an emote.
-#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum EmoteScale {
     /// 1.0
-    #[serde(rename = "1.0")]
+    #[cfg_attr(feature = "serde", serde(rename = "1.0"))]
     Size1_0,
     /// 2.0
-    #[serde(rename = "2.0")]
+    #[cfg_attr(feature = "serde", serde(rename = "2.0"))]
     Size2_0,
     /// 3.0
-    #[serde(rename = "3.0")]
+    #[cfg_attr(feature = "serde", serde(rename = "3.0"))]
     Size3_0,
 }
 
@@ -92,7 +109,13 @@ impl Default for EmoteScale {
 }
 
 impl std::fmt::Display for EmoteScale {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            EmoteScale::Size1_0 => "1.0",
+            EmoteScale::Size2_0 => "2.0",
+            EmoteScale::Size3_0 => "3.0",
+        })
+    }
 }
 
 /// Builder for [emote URLs](https://dev.twitch.tv/docs/irc/emotes#emote-cdn-url-format).
@@ -216,14 +239,16 @@ impl EmoteUrlBuilder<'_> {
     }
 }
 
-/// An Emote Set ID
-#[aliri_braid::braid(serde)]
-pub struct EmoteSetId;
-
+manual_braid! {
+    /// An Emote Set ID
+    pub struct EmoteSetId;
+    pub struct EmoteSetIdRef;
+}
 impl_extra!(EmoteSetId, EmoteSetIdRef);
 
 /// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ResubscriptionEmote {
@@ -242,7 +267,8 @@ impl std::fmt::Display for ResubscriptionEmote {
 }
 
 /// Links to the same image of different sizes
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Image {

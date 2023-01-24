@@ -2,10 +2,11 @@ use std::borrow::Cow;
 
 use serde::{Deserialize, Serialize};
 
-/// A color in hex
-#[aliri_braid::braid(serde)]
-pub struct HexColor;
-
+manual_braid! {
+    /// A color in hex
+    pub struct HexColor;
+    pub struct HexColorRef;
+}
 impl_extra!(no_arb, HexColor, HexColorRef);
 
 #[cfg(feature = "arbitrary")]
@@ -21,7 +22,7 @@ impl<'a> arbitrary::Arbitrary<'a> for HexColor {
 }
 
 /// Colors a user can have
-#[derive(Debug, PartialEq, Eq, Deserialize, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Deserialize)]
 #[serde(field_identifier, rename_all = "snake_case")]
 pub enum NamedUserColor<'a> {
     /// Blue

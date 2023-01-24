@@ -1,5 +1,6 @@
-/// An EventSub Subscription ID
-#[aliri_braid::braid(serde)]
-pub struct EventSubId;
-
+manual_braid! {
+    /// An EventSub Subscription ID
+    pub struct EventSubId;
+    pub struct EventSubIdRef;
+}
 impl_extra!(EventSubId, EventSubIdRef);

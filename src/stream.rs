@@ -1,67 +1,79 @@
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-/// A Stream ID
-#[aliri_braid::braid(serde)]
-pub struct StreamId;
-
+manual_braid! {
+    /// A Stream ID
+    pub struct StreamId;
+    pub struct StreamIdRef;
+}
 impl_extra!(StreamId, StreamIdRef);
 
-/// A game or category ID
-#[aliri_braid::braid(serde)]
-pub struct CategoryId;
-
+manual_braid! {
+    /// A game or category ID
+    pub struct CategoryId;
+    pub struct CategoryIdRef;
+}
 impl_extra!(CategoryId, CategoryIdRef);
 
-/// A tag ID
-#[aliri_braid::braid(serde)]
-pub struct TagId;
-
+manual_braid! {
+    /// A tag ID
+    pub struct TagId;
+    pub struct TagIdRef;
+}
 impl_extra!(TagId, TagIdRef);
 
-/// A Team ID
-#[aliri_braid::braid(serde)]
-pub struct TeamId;
-
+manual_braid! {
+    /// A Team ID
+    pub struct TeamId;
+    pub struct TeamIdRef;
+}
 impl_extra!(TeamId, TeamIdRef);
 
-/// A video ID
-#[aliri_braid::braid(serde)]
-pub struct VideoId;
-
+manual_braid! {
+    /// A video ID
+    pub struct VideoId;
+    pub struct VideoIdRef;
+}
 impl_extra!(VideoId, VideoIdRef);
 
-/// A clip ID
-#[aliri_braid::braid(serde)]
-pub struct ClipId;
-
+manual_braid! {
+    /// A clip ID
+    pub struct ClipId;
+    pub struct ClipIdRef;
+}
 impl_extra!(ClipId, ClipIdRef);
 
-/// A Stream Segment ID.
-#[aliri_braid::braid(serde)]
-pub struct StreamSegmentId;
-
+manual_braid! {
+    /// A Stream Segment ID.
+    pub struct StreamSegmentId;
+    pub struct StreamSegmentIdRef;
+}
 impl_extra!(StreamSegmentId, StreamSegmentIdRef);
 
-/// A Hype Train ID
-#[aliri_braid::braid(serde)]
-pub struct HypeTrainId;
-
+manual_braid! {
+    /// A Hype Train ID
+    pub struct HypeTrainId;
+    pub struct HypeTrainIdRef;
+}
 impl_extra!(HypeTrainId, HypeTrainIdRef);
 
-/// A Charity Campaign ID
-#[aliri_braid::braid(serde)]
-pub struct CharityCampaignId;
-
+manual_braid! {
+    /// A Charity Campaign ID
+    pub struct CharityCampaignId;
+    pub struct CharityCampaignIdRef;
+}
 impl_extra!(CharityCampaignId, CharityCampaignIdRef);
 
-/// A [IGDB](https://www.igdb.com/) ID
-#[aliri_braid::braid(serde)]
-pub struct IgdbId;
-
+manual_braid! {
+    /// A [IGDB](https://www.igdb.com/) ID
+    pub struct IgdbId;
+    pub struct IgdbIdRef;
+}
 impl_extra!(IgdbId, IgdbIdRef);
 
 /// A game or category as defined by Twitch
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TwitchCategory {
@@ -74,25 +86,29 @@ pub struct TwitchCategory {
     /// The ID that IGDB uses to identify this game.
     ///
     /// An empty value may indicate the endpoint does not return an id or that the category/game is not available on IGDB
-    #[serde(
-        deserialize_with = "crate::deserialize_none_from_empty_string",
-        default
+    #[cfg_attr(
+        feature = "serde",
+        serde(
+            deserialize_with = "crate::deserialize_none_from_empty_string",
+            default
+        )
     )]
     pub igdb_id: Option<IgdbId>,
 }
 
 /// Subscription tiers
-#[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
-#[serde(field_identifier)]
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(Deserialize))]
+#[cfg_attr(feature = "serde", serde(field_identifier))]
 pub enum SubscriptionTier {
     /// Tier 1. $4.99
-    #[serde(rename = "1000")]
+    #[cfg_attr(feature = "serde", serde(rename = "1000"))]
     Tier1,
     /// Tier 1. $9.99
-    #[serde(rename = "2000")]
+    #[cfg_attr(feature = "serde", serde(rename = "2000"))]
     Tier2,
     /// Tier 1. $24.99
-    #[serde(rename = "3000")]
+    #[cfg_attr(feature = "serde", serde(rename = "3000"))]
     Tier3,
     /// Prime subscription
     Prime,
@@ -100,6 +116,7 @@ pub enum SubscriptionTier {
     Other(String),
 }
 
+#[cfg(feature = "serde")]
 impl Serialize for SubscriptionTier {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where S: serde::Serializer {
@@ -114,8 +131,9 @@ impl Serialize for SubscriptionTier {
 }
 
 /// Period during which the video was created
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
-#[serde(rename_all = "lowercase")]
+#[derive(PartialEq, Eq, Clone, Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "lowercase"))]
 pub enum VideoPeriod {
     /// Filter by all. Effectively a no-op
     All,
@@ -128,8 +146,9 @@ pub enum VideoPeriod {
 }
 
 /// Type of video
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
-#[serde(rename_all = "snake_case")]
+#[derive(PartialEq, Eq, Clone, Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
 pub enum VideoType {
     /// A live video
     Live,
@@ -155,8 +174,9 @@ pub enum VideoType {
 }
 
 /// Type of video
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
-#[serde(rename_all = "lowercase")]
+#[derive(PartialEq, Eq, Clone, Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "lowercase"))]
 pub enum VideoPrivacy {
     /// Video is public
     Public,
@@ -165,15 +185,7 @@ pub enum VideoPrivacy {
 }
 
 /// Length of the commercial in seconds
-#[derive(
-    displaydoc::Display,
-    serde_repr::Serialize_repr,
-    serde_repr::Deserialize_repr,
-    Debug,
-    Clone,
-    PartialEq,
-    Eq,
-)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u64)]
 #[non_exhaustive]
 pub enum CommercialLength {
@@ -189,6 +201,60 @@ pub enum CommercialLength {
     Length150 = 150,
     /// 180s
     Length180 = 180,
+}
+#[cfg(feature = "serde")]
+impl serde::Serialize for CommercialLength {
+    #[allow(clippy::use_self)]
+    fn serialize<S>(&self, serializer: S) -> core::result::Result<S::Ok, S::Error>
+    where S: serde::Serializer {
+        let value: u64 = *self as u64;
+        serde::Serialize::serialize(&value, serializer)
+    }
+}
+
+/// TODO: macroify?
+#[cfg(feature = "serde")]
+impl<'de> serde::Deserialize<'de> for CommercialLength {
+    #[allow(clippy::use_self)]
+    fn deserialize<D>(deserializer: D) -> core::result::Result<Self, D::Error>
+    where D: serde::Deserializer<'de> {
+        #[allow(non_camel_case_types)]
+        struct discriminant;
+
+        #[allow(non_upper_case_globals)]
+        impl discriminant {
+            const Length120: u64 = CommercialLength::Length120 as u64;
+            const Length150: u64 = CommercialLength::Length150 as u64;
+            const Length180: u64 = CommercialLength::Length180 as u64;
+            const Length30: u64 = CommercialLength::Length30 as u64;
+            const Length60: u64 = CommercialLength::Length60 as u64;
+            const Length90: u64 = CommercialLength::Length90 as u64;
+        }
+        match <u64 as serde::Deserialize>::deserialize(deserializer)? {
+            discriminant::Length30 => core::result::Result::Ok(CommercialLength::Length30),
+            discriminant::Length60 => core::result::Result::Ok(CommercialLength::Length60),
+            discriminant::Length90 => core::result::Result::Ok(CommercialLength::Length90),
+            discriminant::Length120 => core::result::Result::Ok(CommercialLength::Length120),
+            discriminant::Length150 => core::result::Result::Ok(CommercialLength::Length150),
+            discriminant::Length180 => core::result::Result::Ok(CommercialLength::Length180),
+            other => core::result::Result::Err(serde::de::Error::custom(format_args!(
+                "invalid value: {}, expected one of: {}, {}, {}, {}, {}, {}",
+                other,
+                discriminant::Length30,
+                discriminant::Length60,
+                discriminant::Length90,
+                discriminant::Length120,
+                discriminant::Length150,
+                discriminant::Length180
+            ))),
+        }
+    }
+}
+
+impl std::fmt::Display for CommercialLength {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}s", *self as u64)
+    }
 }
 
 impl std::convert::TryFrom<u64> for CommercialLength {
@@ -208,8 +274,21 @@ impl std::convert::TryFrom<u64> for CommercialLength {
 }
 
 /// Error for the `TryFrom` on [`CommercialLength`]
-#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[derive(Debug)]
 pub enum CommercialLengthParseError {
     /// invalid length of {0}
     InvalidLength(u64),
+}
+
+impl std::error::Error for CommercialLengthParseError {}
+
+impl core::fmt::Display for CommercialLengthParseError {
+    fn fmt(&self, formatter: &mut core::fmt::Formatter) -> core::fmt::Result {
+        #[allow(unused_variables)]
+        match self {
+            CommercialLengthParseError::InvalidLength(len) => {
+                write!(formatter, "invalid length of {len}")
+            }
+        }
+    }
 }

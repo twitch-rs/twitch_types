@@ -1,14 +1,17 @@
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-/// A Creator Goal ID
-#[aliri_braid::braid(serde)]
-pub struct CreatorGoalId;
-
+manual_braid! {
+    /// A Creator Goal ID
+    pub struct CreatorGoalId;
+    pub struct CreatorGoalIdRef;
+}
 impl_extra!(CreatorGoalId, CreatorGoalIdRef);
 
 /// Type of creator goal
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[serde(rename_all = "snake_case")]
+#[derive(PartialEq, Eq, Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
 #[non_exhaustive]
 pub enum CreatorGoalType {
     /// The goal is to increase followers.
