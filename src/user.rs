@@ -3,6 +3,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::{DisplayName, UserId, UserName};
 
+pub use crate::{BroadcasterType, UserType};
+
 /// A user according to many endpoints
 #[derive(Clone, Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
