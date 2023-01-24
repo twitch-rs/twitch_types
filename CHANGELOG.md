@@ -6,6 +6,10 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.11...Unreleased)
 
+- Removed most dependencies, mainly `aliri_braid`. Instead we manually create the same implementations.
+- Removed `serde_repr` and `typed-builder` optional dependencies.
+- Renamed `IntoCow::to_cow` -> `IntoCow::into_cow`
+
 ## [v0.3.11] - 2023-01-11
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.10...v0.3.11)
