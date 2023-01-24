@@ -5,7 +5,8 @@
 //! Twitch types
 
 #[macro_use]
-mod macros;
+#[doc(hidden)]
+pub mod macros;
 
 /// Convert a type into a [`Cow`](std::borrow::Cow)
 pub trait IntoCow<'a, Ref: ?Sized>
@@ -15,17 +16,17 @@ where Ref: ToOwned {
     where &'a Self: 'a;
 }
 
-impl<'a, R> IntoCow<'a, R> for std::borrow::Cow<'a, R>
+impl<'a, R, S> IntoCow<'a, R> for std::borrow::Cow<'a, S>
 where
-    &'a R: Into<&'a R>,
     R: ToOwned + ?Sized + 'a,
-    &'a R: Into<std::borrow::Cow<'a, R>>,
-    R::Owned: Into<std::borrow::Cow<'a, R>>,
+    S: ToOwned + ?Sized + 'a,
+    S::Owned: Into<R::Owned>,
+    &'a R: From<&'a S>,
 {
     fn into_cow(self) -> std::borrow::Cow<'a, R> {
         match self {
-            std::borrow::Cow::Borrowed(b) => b.into(),
-            std::borrow::Cow::Owned(o) => o.into(),
+            std::borrow::Cow::Borrowed(b) => std::borrow::Cow::Borrowed(b.into()),
+            std::borrow::Cow::Owned(o) => std::borrow::Cow::Owned(o.into()),
         }
     }
 }
@@ -160,12 +161,35 @@ mod tests {
         assert!(!broadcaster_id(UserId::new(String::from("owned"))));
         assert!(broadcaster_id(&UserId::new(String::from("borrowed owned"))));
         assert!(broadcaster_id(&*UserId::new(String::from("deref owned"))));
-        assert!(!broadcaster_id(std::borrow::Cow::Owned(UserId::new(
-            String::from("cow owned")
-        ))));
+        assert!(!broadcaster_id(std::borrow::Cow::Owned::<'_, UserIdRef>(
+            UserId::new(String::from("cow owned"))
+        )));
         assert!(broadcaster_id(std::borrow::Cow::Borrowed(
             UserIdRef::from_static("cow borrowed")
         )));
+
+        assert!(broadcaster_id(opt(Some(std::borrow::Cow::Borrowed(
+            "through fn borrow"
+        )))));
+
+        assert!(!broadcaster_id(opt(Some(std::borrow::Cow::Owned(
+            "through fn owned".to_owned()
+        )))));
+
+        assert!(!broadcaster_id(opt_ref(Some(&std::borrow::Cow::Owned(
+            "through fn ref owned".to_owned()
+        )))));
+
+        assert!(broadcaster_id(opt_ref(Some(&std::borrow::Cow::Borrowed(
+            "through fn ref borrowed"
+        )))));
+    }
+
+    fn opt(cow: Option<std::borrow::Cow<'_, str>>) -> std::borrow::Cow<'_, UserIdRef> {
+        cow.map(|c| c.into_cow()).unwrap()
+    }
+    fn opt_ref<'a>(cow: Option<&std::borrow::Cow<'a, str>>) -> std::borrow::Cow<'a, UserIdRef> {
+        cow.map(|c| c.clone().into_cow()).unwrap()
     }
     /// aa
     pub fn broadcaster_id<'a>(broadcaster_id: impl IntoCow<'a, UserIdRef> + 'a) -> bool {

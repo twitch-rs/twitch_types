@@ -1,9 +1,12 @@
 /// A basic macro 1.0 implementation of [`aliri_braid`](https://crates.io/crates/aliri_braid)
+#[macro_export]
+#[doc(hidden)]
 macro_rules! manual_braid {
     (
         $(#[$meta:meta])*
 
         $vis:vis struct $Owned:ident;
+        $(#[$_unused_meta:meta])*
         $visref:vis struct $Borrowed:ident;
 
       ) => {
