@@ -6,6 +6,8 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.0...Unreleased)
 
+- Added charity donation id: `CharityDonationId`
+
 ## [v0.4.0] - 2023-01-24
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.3.11...v0.4.0)

@@ -65,6 +65,13 @@ manual_braid! {
 impl_extra!(CharityCampaignId, CharityCampaignIdRef);
 
 manual_braid! {
+    /// A Charity Donation ID
+    pub struct CharityDonationId;
+    pub struct CharityDonationIdRef;
+}
+impl_extra!(CharityDonationId, CharityDonationIdRef);
+
+manual_braid! {
     /// A [IGDB](https://www.igdb.com/) ID
     pub struct IgdbId;
     pub struct IgdbIdRef;
