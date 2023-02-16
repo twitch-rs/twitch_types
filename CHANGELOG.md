@@ -4,7 +4,13 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.0...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.1...Unreleased)
+
+## [v0.4.1] - 2023-02-16
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.0...v0.4.1)
+
+- Added charity donation id: `CharityDonationId`
 
 ## [v0.4.0] - 2023-01-24
 
