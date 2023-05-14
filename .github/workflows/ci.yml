@@ -6,7 +6,8 @@ on:
     branches: [main]
   merge_group:
     types: [checks_requested]
-
+env:
+  MSRV: 1.63.0
 jobs:
   ci:
     name: CI
@@ -38,7 +39,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
-        rust: [1.63.0, nightly]
+        rust: ["", nightly]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -46,7 +47,7 @@ jobs:
       - name: Install rust
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: ${{ matrix.rust }}
+          toolchain: ${{ matrix.rust || env.MSRV }}
       - uses: Swatinem/rust-cache@v2
       - name: Test twitch_types
         run: cargo test --all-targets --all-features --workspace
