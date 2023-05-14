@@ -492,13 +492,12 @@ impl core::fmt::Display for TimestampParseError {
                 write!(formatter, "Could not format the timestamp using `time`")
             }
             TimestampParseError::Other(other) => {
-                write!(formatter, "{}", other)
+                write!(formatter, "{other}")
             }
             TimestampParseError::InvalidFormat { location, s } => {
                 write!(
                     formatter,
-                    "timestamp has an invalid format. {:?} - {}",
-                    s, location
+                    "timestamp has an invalid format. {s:?} - {location}"
                 )
             }
         }
