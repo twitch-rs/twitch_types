@@ -921,7 +921,6 @@
 <a href="#921" id="921">921</a>
 <a href="#922" id="922">922</a>
 <a href="#923" id="923">923</a>
-<a href="#924" id="924">924</a>
 </pre></div><pre class="rust"><code><span class="attr">#![allow(clippy::missing_safety_doc)]
 
 #[derive(Clone, Hash, PartialEq, Eq)]
@@ -1416,14 +1415,13 @@
                 <span class="macro">write!</span>(formatter, <span class="string">&quot;Could not format the timestamp using `time`&quot;</span>)
             }
             TimestampParseError::Other(other) =&gt; {
-                <span class="macro">write!</span>(formatter, <span class="string">&quot;{}&quot;</span>, other)
+                <span class="macro">write!</span>(formatter, <span class="string">&quot;{other}&quot;</span>)
             }
             TimestampParseError::InvalidFormat { location, s } =&gt; {
                 <span class="macro">write!</span>(
                     formatter,
-                    <span class="string">&quot;timestamp has an invalid format. {:?} - {}&quot;</span>,
-                    s, location
-                )
+                    <span class="string">&quot;timestamp has an invalid format. {s:?} - {location}&quot;
+                </span>)
             }
         }
     }
