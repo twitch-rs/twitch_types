@@ -42,8 +42,8 @@
 
 ### Added
 
-* Added `igdb_id` to TwitchCategory
-* Added ZeroFrom and Arbitrary impls for most types behind feature flag `zerofrom` and `arbitrary`
+- Added `igdb_id` to TwitchCategory
+- Added ZeroFrom and Arbitrary impls for most types behind feature flag `zerofrom` and `arbitrary`
 
 ## [v0.3.6] - 2022-10-28
 
@@ -51,11 +51,11 @@
 
 ### Added
 
-* Added `IntoCow` trait to easily take braids to be converted into `Cow`s
+- Added `IntoCow` trait to easily take braids to be converted into `Cow`s
 
 ### Changed
 
-* Added `impl From<&'a Owned> for &'a Ref` and `impl<'a> From<&'a Owned> for Cow<'a, Ref>` for all braids
+- Added `impl From<&'a Owned> for &'a Ref` and `impl<'a> From<&'a Owned> for Cow<'a, Ref>` for all braids
 
 ## [v0.3.5] - 2022-10-22
 
@@ -71,7 +71,7 @@
 
 ### Added
 
-* Added `NamedUserColor` and `HexColor`
+- Added `NamedUserColor` and `HexColor`
 
 ## [v0.3.2] - 2022-10-15
 
@@ -79,7 +79,7 @@
 
 ### Added
 
-* Added `subscription_count`, `new_subscription` and `new_subscription_count` to creator goals
+- Added `subscription_count`, `new_subscription` and `new_subscription_count` to creator goals
 
 ## [v0.3.1] - 2022-10-14
 
@@ -89,14 +89,14 @@
 
 ### Changed
 
-* Move to new org `twitch-rs`
+- Move to new org `twitch-rs`
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.2.0...v0.3.0)
 
 ### Breaking
 
-* Changed `aliri_braid` to version `0.2.4`, changing the `new` method for most types to take a owned string.
-  * `BadgeSetId::new`, `BlockedTermId::new`, `CategoryId::new`, `ChatBadgeId::new`, `CreatorGoalId::new`,
+- Changed `aliri_braid` to version `0.2.4`, changing the `new` method for most types to take a owned string.
+  - `BadgeSetId::new`, `BlockedTermId::new`, `CategoryId::new`, `ChatBadgeId::new`, `CreatorGoalId::new`,
     `DisplayName::new`, `EmoteId::new`, `EmoteSetId::new`, `EventSubId::new`, `HypeTrainId::new`,
     `MsgId::new`, `PollChoiceId::new`, `PollId::new`, `PredictionId::new`, `PredictionOutcomeId::new`,
     `RedemptionId::new`, `RewardId::new`, `StreamId::new`, `StreamSegmentId::new`, `TagId::new`,
@@ -109,17 +109,17 @@
 
 ### Added
 
-* Added `CharityCampaignId`
+- Added `CharityCampaignId`
 
 ## [v0.2.0] - 2022-05-08
 
-* Place types behind features to provide more granularity to the selections.
+- Place types behind features to provide more granularity to the selections.
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.1.0...v0.2.0)
 
 ## [v0.1.0] - 2022-05-08
 
-* Initial move from `twitch_api2` to its own crate.
+- Initial move from `twitch_api2` to its own crate.
 
 ## [End of Changelog]
 
