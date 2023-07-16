@@ -4,7 +4,11 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.1...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.2...Unreleased)
+
+## [v0.4.2] - 2023-07-16
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.1...v0.4.2)
 
 - Added Content Classification Label IDs
 
