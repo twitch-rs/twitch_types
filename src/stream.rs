@@ -299,3 +299,53 @@ impl core::fmt::Display for CommercialLengthParseError {
         }
     }
 }
+
+/// IDs for [content classification labels](https://help.twitch.tv/s/article/content-classification-labels) also known as CCLs
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[non_exhaustive]
+#[cfg_attr(feature = "serde", derive(Deserialize))]
+#[cfg_attr(feature = "serde", serde(field_identifier))]
+pub enum ContentClassificationId {
+    /// Drugs, Intoxication, or Excessive Tobacco Use
+    ///
+    /// Excessive tobacco glorification or promotion, any marijuana consumption/use, legal drug and alcohol induced intoxication, discussions of illegal drugs.
+    DrugsIntoxication,
+    /// Sexual Themes
+    ///
+    /// Content that focuses on sexualized physical attributes and activities, sexual topics, or experiences.
+    SexualThemes,
+    /// Violent and Graphic Depictions
+    ///
+    /// Simulations and/or depictions of realistic violence, gore, extreme injury, or death.
+    ViolentGraphic,
+    /// Gambling
+    ///
+    /// Participating in online or in-person gambling, poker or fantasy sports, that involve the exchange of real money.
+    Gambling,
+    /// Significant Profanity or Vulgarity
+    ///
+    /// Prolonged, and repeated use of obscenities, profanities, and vulgarities, especially as a regular part of speech.
+    ProfanityVulgarity,
+    /// Mature-rated game
+    ///
+    /// Games that are rated Mature or less suitable for a younger audience.
+    MatureGame,
+    /// Other
+    Other(String),
+}
+
+#[cfg(feature = "serde")]
+impl Serialize for ContentClassificationId {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where S: serde::Serializer {
+        serializer.serialize_str(match self {
+            ContentClassificationId::DrugsIntoxication => "DrugsIntoxication",
+            ContentClassificationId::SexualThemes => "SexualThemes",
+            ContentClassificationId::ViolentGraphic => "ViolentGraphic",
+            ContentClassificationId::Gambling => "Gambling",
+            ContentClassificationId::ProfanityVulgarity => "ProfanityVulgarity",
+            ContentClassificationId::MatureGame => "MatureGame",
+            ContentClassificationId::Other(o) => o,
+        })
+    }
+}
