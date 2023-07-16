@@ -6,6 +6,8 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.1...Unreleased)
 
+- Added Content Classification Label IDs
+
 ## [v0.4.1] - 2023-02-16
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.0...v0.4.1)
