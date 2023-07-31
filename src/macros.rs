@@ -177,11 +177,13 @@ macro_rules! manual_braid {
                 ::std::cmp::Ord::cmp(&self.0, &other.0)
             }
         }
-
+        // TODO(2023-07-31): false-positive, remove when rust-lang/rust-clippy#11188 is on nightly
         impl ::std::cmp::PartialOrd for $Owned {
             #[inline]
+            #[allow(unknown_lints)]
+            #[allow(clippy::incorrect_partial_ord_impl_on_ord_type)]
             fn partial_cmp(&self, other: &Self) -> ::std::option::Option<::std::cmp::Ordering> {
-                ::std::cmp::PartialOrd::partial_cmp(&self.0, &other.0)
+                ::std::option::Option::Some(::std::cmp::Ord::cmp(self, other))
             }
         }
 
@@ -568,7 +570,7 @@ macro_rules! impl_extra {
         impl $ref {
             /// Get a
             #[doc = concat!("[`Cow<'_, ", stringify!($ref), ">`](std::borrow::Cow::Borrowed)")]
-            pub fn as_cow<'a>(&'a self) -> ::std::borrow::Cow<'a, $ref> {
+            pub fn as_cow(&self) -> ::std::borrow::Cow<'_, $ref> {
                 self.into()
             }
         }
