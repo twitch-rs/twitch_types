@@ -106,7 +106,7 @@ pub use crate::time::*;
 #[cfg(feature = "user")]
 pub use crate::user::*;
 
-#[cfg(all(feature = "serde", any(feature = "stream")))]
+#[cfg(all(feature = "serde", feature = "stream"))]
 fn deserialize_none_from_empty_string<'de, D, S>(deserializer: D) -> Result<Option<S>, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -144,7 +144,7 @@ where
         }
     }
 
-    deserializer.deserialize_any(Inner(<_>::default()))
+    deserializer.deserialize_any(Inner(std::marker::PhantomData))
 }
 
 #[cfg(test)]
