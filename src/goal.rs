@@ -1,6 +1,3 @@
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
-
 manual_braid! {
     /// A Creator Goal ID
     pub struct CreatorGoalId;
@@ -10,7 +7,10 @@ impl_extra!(CreatorGoalId, CreatorGoalIdRef);
 
 /// Type of creator goal
 #[derive(PartialEq, Eq, Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
 #[non_exhaustive]
 pub enum CreatorGoalType {

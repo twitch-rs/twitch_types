@@ -1,6 +1,3 @@
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
-
 manual_braid! {
     /// A Badge set ID
     pub struct BadgeSetId;
@@ -47,7 +44,10 @@ pub(crate) static EMOTE_V2_URL_TEMPLATE: &str =
 
 /// Formats for an emote.
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "serde", serde(rename_all = "lowercase"))]
 pub enum EmoteAnimationSetting {
     /// Static
@@ -67,7 +67,10 @@ impl std::fmt::Display for EmoteAnimationSetting {
 
 /// Background themes available for an emote.
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "serde", serde(rename_all = "lowercase"))]
 pub enum EmoteThemeMode {
     /// Light
@@ -91,7 +94,10 @@ impl std::fmt::Display for EmoteThemeMode {
 
 /// Scales available for an emote.
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 pub enum EmoteScale {
     /// 1.0
     #[cfg_attr(feature = "serde", serde(rename = "1.0"))]
@@ -248,7 +254,10 @@ impl_extra!(EmoteSetId, EmoteSetIdRef);
 
 /// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.
 #[derive(PartialEq, Eq, Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ResubscriptionEmote {
@@ -268,7 +277,10 @@ impl std::fmt::Display for ResubscriptionEmote {
 
 /// Links to the same image of different sizes
 #[derive(Clone, Debug, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Image {

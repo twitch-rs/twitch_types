@@ -22,7 +22,7 @@ impl<'a> arbitrary::Arbitrary<'a> for HexColor {
 }
 
 /// Colors a user can have
-#[derive(Debug, PartialEq, Eq, Clone, Deserialize)]
+#[derive(Debug, PartialEq, Eq, Clone, serde_derive::Deserialize)]
 #[serde(field_identifier, rename_all = "snake_case")]
 pub enum NamedUserColor<'a> {
     /// Blue

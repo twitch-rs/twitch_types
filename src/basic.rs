@@ -34,7 +34,7 @@ impl_extra!(MsgId, MsgIdRef);
 
 /// Broadcaster types: "partner", "affiliate", or "".
 #[derive(Copy, Clone, Default, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde_derive::Deserialize))]
 pub enum BroadcasterType {
     /// Partner
     #[cfg_attr(feature = "serde", serde(rename = "partner"))]
@@ -62,7 +62,7 @@ impl serde::Serialize for BroadcasterType {
 
 /// User types: "staff", "admin", "global_mod", or "".
 #[derive(Copy, Clone, Default, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde_derive::Deserialize))]
 
 pub enum UserType {
     /// Staff

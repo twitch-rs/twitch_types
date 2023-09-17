@@ -1,5 +1,5 @@
 #[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 manual_braid! {
     /// A Stream ID
@@ -80,7 +80,10 @@ impl_extra!(IgdbId, IgdbIdRef);
 
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Eq, Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TwitchCategory {
@@ -105,7 +108,7 @@ pub struct TwitchCategory {
 
 /// Subscription tiers
 #[derive(Clone, Debug, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde_derive::Deserialize))]
 #[cfg_attr(feature = "serde", serde(field_identifier))]
 pub enum SubscriptionTier {
     /// Tier 1. $4.99
@@ -139,7 +142,10 @@ impl Serialize for SubscriptionTier {
 
 /// Period during which the video was created
 #[derive(PartialEq, Eq, Clone, Debug)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "serde", serde(rename_all = "lowercase"))]
 pub enum VideoPeriod {
     /// Filter by all. Effectively a no-op
@@ -154,7 +160,10 @@ pub enum VideoPeriod {
 
 /// Type of video
 #[derive(PartialEq, Eq, Clone, Debug)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
 pub enum VideoType {
     /// A live video
@@ -182,7 +191,10 @@ pub enum VideoType {
 
 /// Type of video
 #[derive(PartialEq, Eq, Clone, Debug)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "serde", serde(rename_all = "lowercase"))]
 pub enum VideoPrivacy {
     /// Video is public
@@ -303,7 +315,7 @@ impl core::fmt::Display for CommercialLengthParseError {
 /// IDs for [content classification labels](https://help.twitch.tv/s/article/content-classification-labels) also known as CCLs
 #[derive(Clone, Debug, PartialEq, Eq)]
 #[non_exhaustive]
-#[cfg_attr(feature = "serde", derive(Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde_derive::Deserialize))]
 #[cfg_attr(feature = "serde", serde(field_identifier))]
 pub enum ContentClassificationId {
     /// Drugs, Intoxication, or Excessive Tobacco Use
