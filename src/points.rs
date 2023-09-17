@@ -1,6 +1,3 @@
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
-
 use crate::{DisplayName, UserId, UserName};
 manual_braid! {
     /// A reward ID.
@@ -46,7 +43,10 @@ impl_extra!(PredictionOutcomeId, PredictionOutcomeIdRef);
 
 /// Reward redemption max
 #[derive(Clone, Debug, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[cfg_attr(feature = "serde", serde(untagged))]
 #[non_exhaustive]
@@ -71,7 +71,10 @@ pub enum Max {
 
 /// Information about global cooldown
 #[derive(Clone, Debug, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct GlobalCooldown {
@@ -84,7 +87,10 @@ pub struct GlobalCooldown {
 
 /// Poll choice
 #[derive(Clone, Debug, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct PollChoice {
@@ -103,7 +109,10 @@ pub struct PollChoice {
 // FIXME: Poll status has different name depending on if returned from helix or eventsub. See https://twitch.uservoice.com/forums/310213-developers/suggestions/43402176
 /// Status of a poll
 #[derive(PartialEq, Eq, Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[cfg_attr(feature = "serde", serde(rename_all = "UPPERCASE"))]
 #[non_exhaustive]
@@ -131,7 +140,10 @@ pub enum PollStatus {
 // FIXME: Prediction status has different name depending on if returned from helix or eventsub. See https://twitch.uservoice.com/forums/310213-developers/suggestions/43402197
 /// Status of the Prediction
 #[derive(PartialEq, Eq, Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[cfg_attr(feature = "serde", serde(rename_all = "UPPERCASE"))]
 #[non_exhaustive]
@@ -152,7 +164,10 @@ pub enum PredictionStatus {
 
 /// Outcome for the Prediction
 #[derive(PartialEq, Eq, Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct PredictionOutcome {
@@ -173,7 +188,10 @@ pub struct PredictionOutcome {
 // FIXME: eventsub adds prefix `user_*`. See https://discord.com/channels/325552783787032576/326772207844065290/842359030252437514
 /// Users who were the top predictors.
 #[derive(PartialEq, Eq, Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct PredictionTopPredictors {

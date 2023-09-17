@@ -1,6 +1,6 @@
 [package]
 name = "twitch_types"
-version = "0.4.2"
+version = "0.4.3"
 edition = "2021"
 repository = "https://github.com/twitch-rs/twitch_types"
 license = "MIT OR Apache-2.0"
@@ -20,7 +20,8 @@ rust-version = "1.63.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"], optional = true }
+serde = { version = "1.0", optional = true }
+serde_derive = { version = "1.0", optional = true }
 time = { version = "0.3", optional = true, default-features = false, features = [
     "parsing",
     "formatting",
@@ -33,17 +34,17 @@ zerofrom = { version = "0.1.0", optional = true }
 [features]
 default = []
 
-emote = ["serde?/derive"]
-moderation = ["serde?/derive"]
-points = ["serde?/derive"]
-stream = ["serde?/derive"]
+emote = ["serde"]
+moderation = ["serde"]
+points = ["serde"]
+stream = ["serde"]
 timestamp = []
-user = ["serde?/derive"]
-goal = ["serde?/derive"]
+user = ["serde"]
+goal = ["serde"]
 eventsub = []
-color = ["serde/derive"]
+color = ["serde"]
 
-serde = ["dep:serde"]
+serde = ["dep:serde", "dep:serde_derive"]
 
 deny_unknown_fields = ["serde"]
 

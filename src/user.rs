@@ -1,13 +1,13 @@
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
-
 use crate::{DisplayName, UserId, UserName};
 
 pub use crate::{BroadcasterType, UserType};
 
 /// A user according to many endpoints
 #[derive(Clone, Debug, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde_derive::Serialize, serde_derive::Deserialize)
+)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 pub struct User {
     /// ID of the user
