@@ -7,7 +7,7 @@ on:
   merge_group:
     types: [checks_requested]
 env:
-  MSRV: 1.63.0
+  MSRV: 1.67.0
 jobs:
   ci:
     name: CI

@@ -6,6 +6,8 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.3...Unreleased)
 
+- MSRV changed to 1.67.0
+
 ## [v0.4.3] - 2023-09-17
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.2...v0.4.3)
