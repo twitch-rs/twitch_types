@@ -2,7 +2,6 @@ use std::path::{Path, PathBuf};
 
 use clap::Parser;
 use once_cell::sync::OnceCell;
-use serde::Deserialize;
 use xshell::{cmd, Shell};
 
 #[derive(Debug, Parser)]
@@ -82,7 +81,7 @@ fn pkgid() -> Result<String, color_eyre::Report> {
 /// Returns the cargo workspace for the manifest
 pub fn get_cargo_workspace() -> &'static Path {
     static WORKSPACE: OnceCell<PathBuf> = OnceCell::new();
-    #[derive(Debug, Deserialize)]
+    #[derive(Debug, serde_derive::Deserialize)]
     pub struct CargoMetadata {
         pub workspace_root: PathBuf,
     }
