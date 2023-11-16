@@ -42,6 +42,7 @@ timestamp = []
 user = ["serde"]
 goal = ["serde"]
 eventsub = []
+sub = []
 color = ["serde"]
 
 serde = ["dep:serde", "dep:serde_derive"]

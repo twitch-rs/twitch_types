@@ -7,6 +7,7 @@
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.3...Unreleased)
 
 - MSRV changed to 1.67.0
+- Added `sub::CommunityGiftId` and new `sub` feature
 
 ## [v0.4.3] - 2023-09-17
 
