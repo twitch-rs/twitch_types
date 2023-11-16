@@ -4,7 +4,11 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.3...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.4...Unreleased)
+
+## [v0.4.4] - 2023-11-16
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.3...v0.4.4)
 
 - MSRV changed to 1.67.0
 - Added `sub::CommunityGiftId` and new `sub` feature
