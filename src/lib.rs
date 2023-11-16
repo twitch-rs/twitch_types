@@ -78,6 +78,9 @@ pub mod points;
 #[cfg(feature = "stream")]
 /// types for stream related things
 pub mod stream;
+#[cfg(feature = "sub")]
+/// types for subscriptions
+pub mod sub;
 #[cfg(feature = "timestamp")]
 /// types for time
 pub mod time;
@@ -101,6 +104,8 @@ pub use crate::moderation::*;
 pub use crate::points::*;
 #[cfg(feature = "stream")]
 pub use crate::stream::*;
+#[cfg(feature = "sub")]
+pub use crate::sub::*;
 #[cfg(feature = "timestamp")]
 pub use crate::time::*;
 #[cfg(feature = "user")]
