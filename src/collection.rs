@@ -2,52 +2,28 @@
 use std::borrow::Cow;
 
 /// Generic collection of an abstracted item.
-pub enum Collection<'a, T: std::ops::Deref>
+pub enum Collection<'c, T: std::ops::Deref + 'static>
 where [T]: ToOwned {
     /// A collection over owned items
-    Owned(Cow<'a, [T]>),
+    Owned(Cow<'c, [T]>),
     /// A collection over borrowed items
-    Borrowed(Cow<'a, [&'a T]>),
+    Borrowed(Cow<'c, [&'c T]>),
     /// A collection over deref items
-    Ref(Cow<'a, [&'a T::Target]>),
+    Ref(Cow<'c, [&'c T::Target]>),
     /// A collection over owned string items
-    OwnedString(Cow<'a, [String]>),
+    OwnedString(Cow<'c, [String]>),
     /// A collection over borrowed string items
-    BorrowedString(Cow<'a, [&'a String]>),
+    BorrowedString(Cow<'c, [&'c String]>),
     /// A collection over &str items
-    RefStr(Cow<'a, [&'a str]>),
+    RefStr(Cow<'c, [&'c str]>),
 }
 
-impl<'a, T: std::ops::Deref + std::fmt::Debug> std::fmt::Debug for Collection<'a, T>
-where
-    [T]: ToOwned,
-    <[T] as ToOwned>::Owned: std::fmt::Debug,
-    T: std::fmt::Debug,
-    T::Target: std::fmt::Debug,
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Owned(owned) => f.debug_tuple("Owned").field(owned).finish(),
-            Self::Borrowed(borrowed) => f.debug_tuple("Borrowed").field(borrowed).finish(),
-            Self::Ref(ref_) => f.debug_tuple("Ref").field(ref_).finish(),
-            Self::OwnedString(owned) => f.debug_tuple("OwnedString").field(owned).finish(),
-            Self::BorrowedString(borrowed) => {
-                f.debug_tuple("BorrowedString").field(borrowed).finish()
-            }
-            Self::RefStr(ref_) => f.debug_tuple("RefStr").field(ref_).finish(),
-        }
-    }
-}
-
-impl<'a, T: std::ops::Deref> Collection<'a, T> where [T]: ToOwned {}
-
-impl<'a, T: std::ops::Deref> Collection<'a, T>
+impl<'c, T: std::ops::Deref> Collection<'c, T>
 where
     [T]: ToOwned,
     for<'t> &'t T::Target: From<&'t str>,
 {
-    fn iter<'s>(&'s self) -> CollectionIter<'s, T>
-where {
+    fn iter(&self) -> CollectionIter<'_, T> {
         match self {
             Collection::Owned(v) => CollectionIter {
                 inner: CollectionIterInner::Owned(v.as_ref()),
@@ -79,37 +55,42 @@ where {
         }
     }
 
-    fn into_owned(self) -> Vec<T>
+    fn into_vec(self) -> Vec<T>
     where
         [T]: ToOwned<Owned = Vec<T>>,
         T: 'static,
-        for<'d> T: From<&'d <T as std::ops::Deref>::Target>, {
+        for<'d> T: From<&'d <T as std::ops::Deref>::Target>,
+        for<'d> T: From<&'d T>,
+        for<'d> T: From<&'d str>, {
         match self {
             Collection::Owned(v) => v.into_owned(),
-            _ => self.iter().map(|v| T::from(v)).collect(),
+            Collection::Borrowed(v) => v.into_iter().map(|v| (*v).into()).collect(),
+            Collection::Ref(v) => v.into_iter().map(|&v| <T>::from(v)).collect(),
+            Collection::OwnedString(v) => v.into_iter().map(|v| <T>::from(v.as_str())).collect(),
+            Collection::BorrowedString(v) => v.into_iter().map(|v| <T>::from(v.as_str())).collect(),
+            Collection::RefStr(v) => v.into_iter().map(|&v| <T>::from(v)).collect(),
         }
     }
 
-    fn index(&self, range: impl std::ops::RangeBounds<usize>) -> Option<Collection<'_, T>> {
+    fn index(&'c self, range: impl std::ops::RangeBounds<usize>) -> Option<Collection<'_, T>> {
         let range = (range.start_bound().cloned(), range.end_bound().cloned());
-        let new = match self {
-            Collection::Owned(v) => Collection::Owned(Cow::Borrowed(v.get(range)?)),
-            Collection::Borrowed(v) => Collection::Borrowed(Cow::Borrowed(v.get(range)?)),
-            Collection::Ref(v) => Collection::Ref(Cow::Borrowed(v.get(range)?)),
-            Collection::OwnedString(v) => Collection::OwnedString(Cow::Borrowed(v.get(range)?)),
-            Collection::BorrowedString(v) => {
-                Collection::BorrowedString(Cow::Borrowed(v.get(range)?))
+        let new: Collection<'c, T> = match self {
+            Collection::Owned(v) => Collection::Owned(Cow::Borrowed(v.get(range)?.clone())),
+            Collection::Borrowed(v) => Collection::Borrowed(Cow::Borrowed(v.get(range)?.clone())),
+            Collection::Ref(v) => Collection::Ref(Cow::Borrowed(v.get(range)?.clone())),
+            Collection::OwnedString(v) => {
+                Collection::OwnedString(Cow::Borrowed(v.get(range)?.clone()))
             }
-            Collection::RefStr(v) => Collection::RefStr(Cow::Borrowed(v.get(range)?)),
+            Collection::BorrowedString(v) => {
+                Collection::BorrowedString(Cow::Borrowed(v.get(range)?.clone()))
+            }
+            Collection::RefStr(v) => Collection::RefStr(Cow::Borrowed(v.get(range)?.clone())),
         };
         Some(new)
     }
 
-    /// Returns chunks of i
-    pub fn chunks<'s: 'a>(
-        &'s self,
-        chunk_size: usize,
-    ) -> impl Iterator<Item = Collection<'s, T>> + 's {
+    /// Returns chunks of items
+    pub fn chunks(&'c self, chunk_size: usize) -> impl Iterator<Item = Collection<'c, T>> + 'c {
         let len = self.iter().len();
         let mut start = 0;
         std::iter::from_fn(move || {
@@ -122,6 +103,27 @@ where {
             start = end;
             self.index(range)
         })
+    }
+}
+
+impl<'a, T: std::ops::Deref + std::fmt::Debug> std::fmt::Debug for Collection<'a, T>
+where
+    [T]: ToOwned,
+    <[T] as ToOwned>::Owned: std::fmt::Debug,
+    T: std::fmt::Debug,
+    T::Target: std::fmt::Debug,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Owned(owned) => f.debug_tuple("Owned").field(owned).finish(),
+            Self::Borrowed(borrowed) => f.debug_tuple("Borrowed").field(borrowed).finish(),
+            Self::Ref(ref_) => f.debug_tuple("Ref").field(ref_).finish(),
+            Self::OwnedString(owned) => f.debug_tuple("OwnedString").field(owned).finish(),
+            Self::BorrowedString(borrowed) => {
+                f.debug_tuple("BorrowedString").field(borrowed).finish()
+            }
+            Self::RefStr(ref_) => f.debug_tuple("RefStr").field(ref_).finish(),
+        }
     }
 }
 
@@ -158,13 +160,14 @@ where
     fn from(v: &'c [&'c T]) -> Self { Self::Borrowed(Cow::from(v)) }
 }
 
-impl<'a, T: std::ops::Deref> IntoIterator for &'a Collection<'_, T>
+impl<'s, 'c, T: std::ops::Deref> IntoIterator for &'s Collection<'c, T>
 where
     [T]: ToOwned,
     for<'t> &'t T::Target: From<&'t str>,
+    's: 'c
 {
-    type IntoIter = CollectionIter<'a, T>;
-    type Item = &'a T::Target;
+    type IntoIter = CollectionIter<'c, T>;
+    type Item = &'c T::Target;
 
     fn into_iter(self) -> Self::IntoIter { self.iter() }
 }
@@ -182,10 +185,12 @@ where [T]: ToOwned {
     String(Box<dyn std::iter::ExactSizeIterator<Item = &'c T::Target> + 'c>),
 }
 
-impl<'a, T: std::ops::Deref> Iterator for CollectionIter<'a, T>
-where [T]: ToOwned
+impl<'c, T: std::ops::Deref> Iterator for CollectionIter<'c, T>
+where
+    [T]: ToOwned,
+    'c: 'c,
 {
-    type Item = &'a T::Target;
+    type Item = &'c T::Target;
 
     fn next(&mut self) -> Option<Self::Item> {
         match &mut self.inner {
@@ -257,7 +262,7 @@ where
 impl<T: std::ops::Deref> serde::Serialize for Collection<'_, T>
 where
     [T]: ToOwned,
-    for<'a> &'a T::Target: serde::Serialize,
+    for<'s> &'s T::Target: serde::Serialize,
     for<'s> &'s T::Target: From<&'s str>,
 {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
@@ -282,7 +287,7 @@ where [T]: ToOwned
     }
 }
 
-impl<'t, T: std::ops::Deref> PartialEq for Collection<'t, T>
+impl<T: std::ops::Deref> PartialEq for Collection<'_, T>
 where
     [T]: ToOwned,
     T: PartialEq,
@@ -316,7 +321,7 @@ where
     }
 }
 
-impl<'t, T: std::ops::Deref> Eq for Collection<'t, T>
+impl<T: std::ops::Deref> Eq for Collection<'_, T>
 where
     [T]: ToOwned,
     T: PartialEq,
