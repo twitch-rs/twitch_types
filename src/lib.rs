@@ -7,6 +7,9 @@
 #[macro_use]
 #[doc(hidden)]
 pub mod macros;
+pub mod collection;
+
+pub use collection::Collection;
 
 /// Convert a type into a [`Cow`](std::borrow::Cow)
 pub trait IntoCow<'a, Ref: ?Sized>
