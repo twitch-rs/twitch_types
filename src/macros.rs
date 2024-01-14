@@ -440,6 +440,47 @@ macro_rules! manual_braid {
             fn from(v: &'a [&'a str]) -> Self { Self::RefStr(::std::borrow::Cow::from(v)) }
         }
 
+        impl<'a, const N: usize> From<&'a [&'a str; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [&'a str; N]) -> Self { Self::RefStr(::std::borrow::Cow::from(v.as_slice())) }
+        }
+
+        impl<'a, const N: usize> From<&'a [$Owned; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [$Owned; N]) -> Self { Self::Owned(::std::borrow::Cow::from(v.as_slice())) }
+        }
+
+        impl<'a, const N: usize> From<&'a [&'a $Owned; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [&'a $Owned; N]) -> Self { Self::Borrowed(::std::borrow::Cow::from(v.as_slice())) }
+        }
+
+        impl<'a, const N: usize> From<&'a [&'a $Borrowed; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [&'a $Borrowed; N]) -> Self { Self::Ref(::std::borrow::Cow::from(v.as_slice())) }
+        }
+
+        impl<'a> From<&'a $Owned>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a $Owned) -> Self { Self::Owned(::std::borrow::Cow::from(std::slice::from_ref(v))) }
+        }
+
+        impl<'a> From<&'a &'a $Borrowed>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a &'a $Borrowed) -> Self { Self::Ref(::std::borrow::Cow::from(std::slice::from_ref(v))) }
+        }
+
+        impl<'a> From<&'a &'a str>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a &'a str) -> Self { Self::RefStr(::std::borrow::Cow::from(std::slice::from_ref(v))) }
+        }
     }
 }
 
