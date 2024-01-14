@@ -47,7 +47,7 @@ where
     for<'t> &'t T::Target: From<&'t String>,
     for<'t> &'t T::Target: From<&'t str>,
 {
-    fn iter(&self) -> CollectionIter<'_, T>
+    fn iter<'s>(&'s self) -> CollectionIter<'s, T>
 where {
         match self {
             Collection::Owned(v) => CollectionIter {
@@ -60,13 +60,13 @@ where {
                 inner: CollectionIterInner::Ref(v.as_ref()),
             },
             Collection::OwnedString(v) => {
-                let mut iter = Box::new(v.iter().map(|v| <_>::from(v)));
+                let mut iter = Box::new(v.iter().map(|v| <_>::from(v.as_str())));
                 CollectionIter {
                     inner: CollectionIterInner::String(iter),
                 }
             }
             Collection::BorrowedString(v) => {
-                let mut iter = Box::new(v.iter().map(|&v| <_>::from(v)));
+                let mut iter = Box::new(v.iter().map(|&v| <_>::from(v.as_str())));
                 CollectionIter {
                     inner: CollectionIterInner::String(iter),
                 }
@@ -214,7 +214,6 @@ impl<T: std::ops::Deref> serde::Serialize for Collection<'_, T>
 where
     [T]: ToOwned,
     for<'a> &'a T::Target: serde::Serialize,
-    for<'s> &'s T::Target: From<&'s String>,
     for<'s> &'s T::Target: From<&'s str>,
 {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
@@ -245,7 +244,6 @@ where
     T: PartialEq,
     T::Target: PartialEq,
     T: std::cmp::PartialEq<T::Target>,
-    for<'s> &'s T::Target: From<&'s String>,
     for<'s> &'s T::Target: From<&'s str>,
     T::Target: std::fmt::Debug,
     T: std::fmt::Debug,
