@@ -44,7 +44,6 @@ impl<'a, T: std::ops::Deref> Collection<'a, T> where [T]: ToOwned {}
 impl<'a, T: std::ops::Deref> Collection<'a, T>
 where
     [T]: ToOwned,
-    for<'t> &'t T::Target: From<&'t String>,
     for<'t> &'t T::Target: From<&'t str>,
 {
     fn iter<'s>(&'s self) -> CollectionIter<'s, T>
@@ -90,6 +89,40 @@ where {
             _ => self.iter().map(|v| T::from(v)).collect(),
         }
     }
+
+    fn index(&self, range: impl std::ops::RangeBounds<usize>) -> Option<Collection<'_, T>> {
+        let range = (range.start_bound().cloned(), range.end_bound().cloned());
+        let new = match self {
+            Collection::Owned(v) => Collection::Owned(Cow::Borrowed(v.get(range)?)),
+            Collection::Borrowed(v) => Collection::Borrowed(Cow::Borrowed(v.get(range)?)),
+            Collection::Ref(v) => Collection::Ref(Cow::Borrowed(v.get(range)?)),
+            Collection::OwnedString(v) => Collection::OwnedString(Cow::Borrowed(v.get(range)?)),
+            Collection::BorrowedString(v) => {
+                Collection::BorrowedString(Cow::Borrowed(v.get(range)?))
+            }
+            Collection::RefStr(v) => Collection::RefStr(Cow::Borrowed(v.get(range)?)),
+        };
+        Some(new)
+    }
+
+    /// Returns chunks of i
+    pub fn chunks<'s: 'a>(
+        &'s self,
+        chunk_size: usize,
+    ) -> impl Iterator<Item = Collection<'s, T>> + 's {
+        let len = self.iter().len();
+        let mut start = 0;
+        std::iter::from_fn(move || {
+            if start >= len {
+                return None;
+            }
+            let end = start + chunk_size;
+            let end = if end > len { len } else { end };
+            let range = start..end;
+            start = end;
+            self.index(range)
+        })
+    }
 }
 
 impl<T: std::ops::Deref + Clone> From<Vec<T>> for Collection<'_, T>
@@ -123,6 +156,17 @@ where
     T: 'static,
 {
     fn from(v: &'c [&'c T]) -> Self { Self::Borrowed(Cow::from(v)) }
+}
+
+impl<'a, T: std::ops::Deref> IntoIterator for &'a Collection<'_, T>
+where
+    [T]: ToOwned,
+    for<'t> &'t T::Target: From<&'t str>,
+{
+    type IntoIter = CollectionIter<'a, T>;
+    type Item = &'a T::Target;
+
+    fn into_iter(self) -> Self::IntoIter { self.iter() }
 }
 
 pub struct CollectionIter<'c, T: std::ops::Deref>
