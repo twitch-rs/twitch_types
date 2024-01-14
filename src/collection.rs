@@ -274,6 +274,26 @@ where
     }
 }
 
+impl<'t, T: std::ops::Deref> Eq for Collection<'t, T>
+where
+    [T]: ToOwned,
+    T: PartialEq,
+    T::Target: PartialEq,
+    T: std::cmp::PartialEq<T::Target>,
+    for<'s> &'s T::Target: From<&'s str>,
+    T::Target: std::fmt::Debug,
+    T: std::fmt::Debug,
+{
+}
+
+impl<T: std::ops::Deref> Default for Collection<'_, T>
+where
+    [T]: ToOwned,
+    <[T] as ToOwned>::Owned: Default,
+{
+    fn default() -> Self { Self::Ref(Cow::default()) }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
