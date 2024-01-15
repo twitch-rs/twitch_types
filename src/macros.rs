@@ -392,6 +392,24 @@ macro_rules! manual_braid {
             }
         }
 
+        impl<'a> From<&'a Vec<&'a $Owned>>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a Vec<&'a $Owned>) -> Self { Self::Borrowed(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<&'a Vec<&'a str>>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a Vec<&'a str>) -> Self { Self::RefStr(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<&'a Vec<String>>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a Vec<String>) -> Self { Self::OwnedString(::std::borrow::Cow::from(v)) }
+        }
+
         impl<'a> From<Vec<&'a $Borrowed>>
             for $crate::collection::Collection<'a, $Owned>
         {
@@ -452,6 +470,12 @@ macro_rules! manual_braid {
             fn from(v: &'a [$Owned; N]) -> Self { Self::Owned(::std::borrow::Cow::from(v.as_slice())) }
         }
 
+        impl<'a, const N: usize> From<&'a [String; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [String; N]) -> Self { Self::OwnedString(::std::borrow::Cow::from(v.as_slice())) }
+        }
+
         impl<'a, const N: usize> From<&'a [&'a $Owned; N]>
             for $crate::collection::Collection<'a, $Owned>
         {
@@ -461,7 +485,7 @@ macro_rules! manual_braid {
         impl<'a, const N: usize> From<&'a [&'a $Borrowed; N]>
             for $crate::collection::Collection<'a, $Owned>
         {
-            fn from(v: &'a [&'a $Borrowed; N]) -> Self { Self::Ref(::std::borrow::Cow::from(v.as_slice())) }
+            fn from(v: &'a [&'a $Borrowed; N]) -> Self { Self::Ref(::std::borrow::Cow::Borrowed(v.as_slice())) }
         }
 
         impl<'a> From<&'a $Owned>

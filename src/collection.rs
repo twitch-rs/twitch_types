@@ -1,7 +1,29 @@
-#![allow(warnings, missing_docs)]
 use std::borrow::Cow;
 
 /// Generic collection of an abstracted item.
+///
+/// This is used to abstract over the different types of collections that can be used,
+/// such as `Vec<T>`, `&[T]`, `&[&T]`, `&[&str]`, etc.
+///
+/// In most cases, you can use the [`Collection::from`] method to create a collection.
+/// If you get an error
+///
+/// # Examples
+///
+/// ```rust
+/// use twitch_types::{Collection, UserId, UserIdRef};
+///
+/// // A vector of `UserId`s
+/// let c0: Collection<UserId> = Collection::from(vec![UserId::from("1234"), UserId::from("5678")]);
+/// // A vector of `&str`s
+/// let c1: Collection<UserId> = Collection::from(vec!["1234", "5678"]);
+/// // An array of `&str`s
+/// let c2: Collection<UserId> = Collection::from(&["1234", "5678"]);
+/// // A vector of `UserIdRef`s
+/// let c3: Collection<UserId> = Collection::from(vec![UserIdRef::from_static("1234"), UserIdRef::from_static("5678")]);
+///
+/// assert!([c1, c2, c3].iter().all(|c| *c == c0));
+/// ```
 pub enum Collection<'c, T: std::ops::Deref + 'static>
 where [T]: ToOwned {
     /// A collection over owned items
@@ -23,7 +45,20 @@ where
     [T]: ToOwned,
     for<'t> &'t T::Target: From<&'t str>,
 {
-    fn iter(&self) -> CollectionIter<'_, T> {
+    /// Returns an iterator over the collection.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_types::{Collection, UserId, UserIdRef};
+    ///
+    /// let collection: Collection<UserId> = Collection::from(&["1234", "5678"]);
+    /// let mut iter = collection.iter();
+    /// assert_eq!(iter.next(), Some(UserIdRef::from_static("1234")));
+    /// assert_eq!(iter.next(), Some(UserIdRef::from_static("5678")));
+    /// assert_eq!(iter.next(), None);
+    /// ```
+    pub fn iter(&self) -> CollectionIter<'_, T> {
         match self {
             Collection::Owned(v) => CollectionIter {
                 inner: CollectionIterInner::Owned(v.as_ref()),
@@ -35,19 +70,19 @@ where
                 inner: CollectionIterInner::Ref(v.as_ref()),
             },
             Collection::OwnedString(v) => {
-                let mut iter = Box::new(v.iter().map(|v| <_>::from(v.as_str())));
+                let iter = Box::new(v.iter().map(|v| <_>::from(v.as_str())));
                 CollectionIter {
                     inner: CollectionIterInner::String(iter),
                 }
             }
             Collection::BorrowedString(v) => {
-                let mut iter = Box::new(v.iter().map(|&v| <_>::from(v.as_str())));
+                let iter = Box::new(v.iter().map(|&v| <_>::from(v.as_str())));
                 CollectionIter {
                     inner: CollectionIterInner::String(iter),
                 }
             }
             Collection::RefStr(v) => {
-                let mut iter = Box::new(v.iter().map(move |&v| <_>::from(v)));
+                let iter = Box::new(v.iter().map(move |&v| <_>::from(v)));
                 CollectionIter {
                     inner: CollectionIterInner::String(iter),
                 }
@@ -55,42 +90,49 @@ where
         }
     }
 
-    fn into_vec(self) -> Vec<T>
+    /// Converts the collection into a vector.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use twitch_types::{Collection, UserId};
+    ///
+    /// let collection = Collection::from(vec!["1", "2", "3"]);
+    /// let vector: Vec<UserId> = collection.into_vec();
+    /// ```
+    pub fn into_vec(self) -> Vec<T>
     where
         [T]: ToOwned<Owned = Vec<T>>,
-        T: 'static,
+        T: 'static + Clone,
         for<'d> T: From<&'d <T as std::ops::Deref>::Target>,
-        for<'d> T: From<&'d T>,
         for<'d> T: From<&'d str>, {
         match self {
             Collection::Owned(v) => v.into_owned(),
-            Collection::Borrowed(v) => v.into_iter().map(|v| (*v).into()).collect(),
-            Collection::Ref(v) => v.into_iter().map(|&v| <T>::from(v)).collect(),
-            Collection::OwnedString(v) => v.into_iter().map(|v| <T>::from(v.as_str())).collect(),
-            Collection::BorrowedString(v) => v.into_iter().map(|v| <T>::from(v.as_str())).collect(),
-            Collection::RefStr(v) => v.into_iter().map(|&v| <T>::from(v)).collect(),
+            Collection::Borrowed(v) => v.iter().map(|v| (*v).clone()).collect(),
+            Collection::Ref(v) => v.iter().map(|&v| <T>::from(v)).collect(),
+            Collection::OwnedString(v) => v.iter().map(|v| <T>::from(v.as_str())).collect(),
+            Collection::BorrowedString(v) => v.iter().map(|v| <T>::from(v.as_str())).collect(),
+            Collection::RefStr(v) => v.iter().map(|&v| <T>::from(v)).collect(),
         }
     }
 
     fn index(&'c self, range: impl std::ops::RangeBounds<usize>) -> Option<Collection<'_, T>> {
         let range = (range.start_bound().cloned(), range.end_bound().cloned());
-        let new: Collection<'c, T> = match self {
-            Collection::Owned(v) => Collection::Owned(Cow::Borrowed(v.get(range)?.clone())),
-            Collection::Borrowed(v) => Collection::Borrowed(Cow::Borrowed(v.get(range)?.clone())),
-            Collection::Ref(v) => Collection::Ref(Cow::Borrowed(v.get(range)?.clone())),
-            Collection::OwnedString(v) => {
-                Collection::OwnedString(Cow::Borrowed(v.get(range)?.clone()))
-            }
+        let new: Collection<'_, T> = match self {
+            Collection::Owned(v) => Collection::Owned(Cow::Borrowed(v.get(range)?)),
+            Collection::Borrowed(v) => Collection::Borrowed(Cow::Borrowed(v.get(range)?)),
+            Collection::Ref(v) => Collection::Ref(Cow::Borrowed(v.get(range)?)),
+            Collection::OwnedString(v) => Collection::OwnedString(Cow::Borrowed(v.get(range)?)),
             Collection::BorrowedString(v) => {
-                Collection::BorrowedString(Cow::Borrowed(v.get(range)?.clone()))
+                Collection::BorrowedString(Cow::Borrowed(v.get(range)?))
             }
-            Collection::RefStr(v) => Collection::RefStr(Cow::Borrowed(v.get(range)?.clone())),
+            Collection::RefStr(v) => Collection::RefStr(Cow::Borrowed(v.get(range)?)),
         };
         Some(new)
     }
 
-    /// Returns chunks of items
-    pub fn chunks(&'c self, chunk_size: usize) -> impl Iterator<Item = Collection<'c, T>> + 'c {
+    /// Returns chunks of items, similar to [`slice::chunks`]
+    pub fn chunks(&'c self, chunk_size: usize) -> impl Iterator<Item = Collection<'_, T>> + '_ {
         let len = self.iter().len();
         let mut start = 0;
         std::iter::from_fn(move || {
@@ -164,7 +206,7 @@ impl<'s, 'c, T: std::ops::Deref> IntoIterator for &'s Collection<'c, T>
 where
     [T]: ToOwned,
     for<'t> &'t T::Target: From<&'t str>,
-    's: 'c
+    's: 'c,
 {
     type IntoIter = CollectionIter<'c, T>;
     type Item = &'c T::Target;
@@ -172,6 +214,7 @@ where
     fn into_iter(self) -> Self::IntoIter { self.iter() }
 }
 
+/// Iterator over the elements of a [`Collection`].
 pub struct CollectionIter<'c, T: std::ops::Deref>
 where [T]: ToOwned {
     inner: CollectionIterInner<'c, T>,
