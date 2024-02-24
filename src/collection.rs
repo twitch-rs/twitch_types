@@ -1,4 +1,4 @@
-use std::borrow::Cow;
+use std::{borrow::{Cow, Borrow}, sync::Arc};
 
 /// Generic collection of an abstracted item.
 ///
@@ -20,20 +20,23 @@ use std::borrow::Cow;
 /// // An array of `&str`s
 /// let c2: Collection<UserId> = Collection::from(&["1234", "5678"]);
 /// // A vector of `UserIdRef`s
-/// let c3: Collection<UserId> = Collection::from(vec![UserIdRef::from_static("1234"), UserIdRef::from_static("5678")]);
+/// let c3: Collection<UserId> = Collection::from(vec![
+///     UserIdRef::from_static("1234"),
+///     UserIdRef::from_static("5678"),
+/// ]);
 ///
 /// assert!([c1, c2, c3].iter().all(|c| *c == c0));
 /// ```
 pub enum Collection<'c, T: std::ops::Deref + 'static>
 where [T]: ToOwned {
     /// A collection over owned items
-    Owned(Cow<'c, [T]>),
+    Owned(Arc<[T]>),
     /// A collection over borrowed items
     Borrowed(Cow<'c, [&'c T]>),
     /// A collection over deref items
     Ref(Cow<'c, [&'c T::Target]>),
     /// A collection over owned string items
-    OwnedString(Cow<'c, [String]>),
+    OwnedString(Arc<[String]>),
     /// A collection over borrowed string items
     BorrowedString(Cow<'c, [&'c String]>),
     /// A collection over &str items
@@ -41,9 +44,7 @@ where [T]: ToOwned {
 }
 
 impl<'c, T: std::ops::Deref> Collection<'c, T>
-where
-    [T]: ToOwned,
-    for<'t> &'t T::Target: From<&'t str>,
+where [T]: ToOwned
 {
     /// Returns an iterator over the collection.
     ///
@@ -58,35 +59,83 @@ where
     /// assert_eq!(iter.next(), Some(UserIdRef::from_static("5678")));
     /// assert_eq!(iter.next(), None);
     /// ```
-    pub fn iter(&self) -> CollectionIter<'_, T> {
+    pub fn iter(&'_ self) -> CollectionIter<'c, T>
+    where
+        for<'s> &'s T::Target: From<&'s str>,
+        for<'a> T: Borrow<T::Target>, {
         match self {
             Collection::Owned(v) => CollectionIter {
-                inner: CollectionIterInner::Owned(v.as_ref()),
+                inner: CollectionIterInner::Owned(v.clone()),
             },
-            Collection::Borrowed(v) => CollectionIter {
-                inner: CollectionIterInner::Borrowed(v.as_ref()),
+            Collection::Borrowed(Cow::Owned(v)) => CollectionIter {
+                inner: CollectionIterInner::Borrowed(todo!()),
             },
-            Collection::Ref(v) => CollectionIter {
-                inner: CollectionIterInner::Ref(v.as_ref()),
+            Collection::Borrowed(Cow::Borrowed(v)) => CollectionIter {
+                inner: CollectionIterInner::Borrowed(v),
+            },
+            Collection::Ref(Cow::Owned(v)) => CollectionIter {
+                inner: CollectionIterInner::Ref(todo!()),
+            },
+            Collection::Ref(Cow::Borrowed(v)) => CollectionIter {
+                inner: CollectionIterInner::Ref(&v),
             },
             Collection::OwnedString(v) => {
-                let iter = Box::new(v.iter().map(|v| <_>::from(v.as_str())));
-                CollectionIter {
-                    inner: CollectionIterInner::String(iter),
-                }
+                // let iter = Box::new(v.iter().map(|v| <_>::from(v.as_str())));
+                // CollectionIter {
+                //     inner: CollectionIterInner::String(iter),
+                // }
+                todo!()
             }
-            Collection::BorrowedString(v) => {
+            Collection::BorrowedString(Cow::Owned(v)) => {
+                // let iter = Box::new(v.iter().map(|&v| <_>::from(v.as_str())));
+                // CollectionIter {
+                //     inner: CollectionIterInner::String(iter),
+                // }
+                todo!()
+            }
+            Collection::BorrowedString(Cow::Borrowed(v)) => {
                 let iter = Box::new(v.iter().map(|&v| <_>::from(v.as_str())));
                 CollectionIter {
                     inner: CollectionIterInner::String(iter),
                 }
             }
-            Collection::RefStr(v) => {
+            Collection::RefStr(Cow::Owned(v)) => {
+                // let iter = Box::new(v.iter().map(move |&v| <_>::from(v)));
+                // CollectionIter {
+                //     inner: CollectionIterInner::String(iter),
+                // }
+                todo!()
+            }
+            Collection::RefStr(Cow::Borrowed(v)) => {
                 let iter = Box::new(v.iter().map(move |&v| <_>::from(v)));
                 CollectionIter {
                     inner: CollectionIterInner::String(iter),
                 }
             }
+        }
+    }
+
+    /// Returns the number of items in the collection.
+    pub fn len(&self) -> usize {
+        match self {
+            Collection::Owned(v) => v.len(),
+            Collection::Borrowed(v) => v.len(),
+            Collection::Ref(v) => v.len(),
+            Collection::OwnedString(v) => v.len(),
+            Collection::BorrowedString(v) => v.len(),
+            Collection::RefStr(v) => v.len(),
+        }
+    }
+
+    /// Returns `true` if the collection contains no items.
+    pub fn is_empty(&self) -> bool {
+        match self {
+            Collection::Owned(v) => v.is_empty(),
+            Collection::Borrowed(v) => v.is_empty(),
+            Collection::Ref(v) => v.is_empty(),
+            Collection::OwnedString(v) => v.is_empty(),
+            Collection::BorrowedString(v) => v.is_empty(),
+            Collection::RefStr(v) => v.is_empty(),
         }
     }
 
@@ -107,7 +156,7 @@ where
         for<'d> T: From<&'d <T as std::ops::Deref>::Target>,
         for<'d> T: From<&'d str>, {
         match self {
-            Collection::Owned(v) => v.into_owned(),
+            Collection::Owned(v) => v.to_vec(),
             Collection::Borrowed(v) => v.iter().map(|v| (*v).clone()).collect(),
             Collection::Ref(v) => v.iter().map(|&v| <T>::from(v)).collect(),
             Collection::OwnedString(v) => v.iter().map(|v| <T>::from(v.as_str())).collect(),
@@ -116,35 +165,76 @@ where
         }
     }
 
-    fn index(&'c self, range: impl std::ops::RangeBounds<usize>) -> Option<Collection<'_, T>> {
-        let range = (range.start_bound().cloned(), range.end_bound().cloned());
-        let new: Collection<'_, T> = match self {
-            Collection::Owned(v) => Collection::Owned(Cow::Borrowed(v.get(range)?)),
-            Collection::Borrowed(v) => Collection::Borrowed(Cow::Borrowed(v.get(range)?)),
-            Collection::Ref(v) => Collection::Ref(Cow::Borrowed(v.get(range)?)),
-            Collection::OwnedString(v) => Collection::OwnedString(Cow::Borrowed(v.get(range)?)),
-            Collection::BorrowedString(v) => {
-                Collection::BorrowedString(Cow::Borrowed(v.get(range)?))
-            }
-            Collection::RefStr(v) => Collection::RefStr(Cow::Borrowed(v.get(range)?)),
-        };
-        Some(new)
+    /// Make a ref vec
+    pub fn into_ref_vec(self) -> Arc<[&'c T::Target]>
+    where
+        [T]: ToOwned<Owned = Vec<T>>,
+        T: 'static + Clone,
+        for<'d> &'d T::Target: From<&'d str>, {
+        match self {
+            //Collection::Owned(v) => {
+            //    let v: Arc<[T]> = v;
+            //    v.clone().iter().map(|v| v.deref()).collect()
+            //}
+            Collection::Borrowed(v) => v.iter().map(|v| v.deref()).collect(),
+            Collection::Ref(v) => v.into(),
+            //Collection::OwnedString(v) => v.iter().map(|v| v.as_str().into()).collect(),
+            Collection::BorrowedString(v) => v.iter().map(|v| <_>::from(v.as_str())).collect(),
+            Collection::RefStr(v) => v.iter().map(|&v| v.into()).collect(),
+            _ => todo!(),
+        }
     }
 
     /// Returns chunks of items, similar to [`slice::chunks`]
-    pub fn chunks(&'c self, chunk_size: usize) -> impl Iterator<Item = Collection<'_, T>> + '_ {
-        let len = self.iter().len();
-        let mut start = 0;
-        std::iter::from_fn(move || {
-            if start >= len {
-                return None;
+    pub fn chunks(&'c self, chunk_size: usize) -> CollectionChunks<'c, T>
+    where
+        for<'s> &'s T::Target: From<&'s str>,
+        T: Clone, {
+        CollectionChunks {
+            inner: self,
+            chunk_size,
+            index: 0,
+        }
+    }
+}
+
+pub struct CollectionChunks<'c, T: std::ops::Deref + 'static>
+where [T]: ToOwned {
+    inner: &'c Collection<'c, T>,
+    chunk_size: usize,
+    index: usize,
+}
+
+impl<'c, T: std::ops::Deref + Clone + 'static> Iterator for CollectionChunks<'c, T>
+where [T]: ToOwned
+{
+    type Item = Collection<'c, T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.inner.is_empty() {
+            return None;
+        }
+        let end = if self.chunk_size + self.index > self.inner.len() {
+            self.inner.len()
+        } else {
+            self.chunk_size + self.index
+        };
+        let new = match self.inner {
+            Collection::Owned(v) => {
+                Collection::<'c, _>::Owned(v.get(self.index..end)?.clone().into())
             }
-            let end = start + chunk_size;
-            let end = if end > len { len } else { end };
-            let range = start..end;
-            start = end;
-            self.index(range)
-        })
+            Collection::Borrowed(v) => Collection::Borrowed(v.get(self.index..end)?.clone().into()),
+            Collection::Ref(v) => Collection::Ref(v.get(self.index..end)?.clone().into()),
+            Collection::OwnedString(v) => {
+                Collection::OwnedString(v.get(self.index..end)?.clone().into())
+            }
+            Collection::BorrowedString(v) => {
+                Collection::BorrowedString(v.get(self.index..end)?.clone().into())
+            }
+            Collection::RefStr(v) => Collection::RefStr(v.get(self.index..end)?.clone().into()),
+        };
+        self.index += self.chunk_size;
+        Some(new)
     }
 }
 
@@ -174,7 +264,7 @@ where
     [T]: ToOwned,
     T: 'static,
 {
-    fn from(v: Vec<T>) -> Self { Self::Owned(Cow::from(v)) }
+    fn from(v: Vec<T>) -> Self { Self::Owned(v.into()) }
 }
 
 impl<'c, T: std::ops::Deref + Clone> From<Vec<&'c T>> for Collection<'c, T>
@@ -191,7 +281,7 @@ where
     [T]: ToOwned,
     T: 'static,
 {
-    fn from(v: &'c [T]) -> Self { Self::Owned(Cow::Borrowed(v)) }
+    fn from(v: &'c [T]) -> Self { Self::Owned(v.into()) }
 }
 
 impl<'c, T: std::ops::Deref + Clone> From<&'c [&'c T]> for Collection<'c, T>
@@ -202,11 +292,12 @@ where
     fn from(v: &'c [&'c T]) -> Self { Self::Borrowed(Cow::from(v)) }
 }
 
-impl<'s, 'c, T: std::ops::Deref> IntoIterator for &'s Collection<'c, T>
+impl<'se, 'c, T: std::ops::Deref> IntoIterator for &'se Collection<'c, T>
 where
     [T]: ToOwned,
-    for<'t> &'t T::Target: From<&'t str>,
-    's: 'c,
+    for<'s> &'s T::Target: From<&'s str>,
+    for<'a> T: Borrow<T::Target>,
+    'se: 'c,
 {
     type IntoIter = CollectionIter<'c, T>;
     type Item = &'c T::Target;
@@ -224,18 +315,24 @@ enum CollectionIterInner<'c, T: std::ops::Deref>
 where [T]: ToOwned {
     Ref(&'c [&'c T::Target]),
     Borrowed(&'c [&'c T]),
-    Owned(&'c [T]),
-    String(Box<dyn std::iter::ExactSizeIterator<Item = &'c T::Target> + 'c>),
+    Owned(Arc<[T]>),
+    String(Box<dyn std::iter::ExactSizeIterator<Item = &'c T::Target> +Send + Sync + 'c>),
 }
 
 impl<'c, T: std::ops::Deref> Iterator for CollectionIter<'c, T>
 where
     [T]: ToOwned,
-    'c: 'c,
+    for<'a> T: Borrow<T::Target>,
 {
     type Item = &'c T::Target;
 
     fn next(&mut self) -> Option<Self::Item> {
+        fn take_first<'a, TT>(slice: &mut &'a mut [TT]) -> Option<&'a TT> {
+            let (first, rem) = std::mem::take(slice).split_first_mut()?;
+            *slice = rem;
+            Some(first)
+        }
+
         match &mut self.inner {
             CollectionIterInner::Ref(ref_) => {
                 let v = ref_.first()?;
@@ -248,9 +345,13 @@ where
                 Some(v)
             }
             CollectionIterInner::Owned(owned) => {
-                let v = owned.first()?;
-                *owned = &owned[1..];
-                Some(v)
+                if let Some(mut owned) = Arc::get_mut(owned) {
+                    let v = take_first(&mut owned);
+                    // v.map(|v| v.deref())
+                    todo!()
+                } else {
+                    panic!()
+                }
             }
             CollectionIterInner::String(b) => b.next(),
         }
@@ -263,22 +364,22 @@ where
         self.len()
     }
 
-    fn last(self) -> Option<Self::Item>
-    where Self: Sized {
-        match self.inner {
-            CollectionIterInner::Ref(v) => v.last().copied(),
-            CollectionIterInner::Borrowed(v) => v.last().map(|v| v.deref()),
-            CollectionIterInner::Owned(v) => v.last().map(|v| v.deref()),
-            CollectionIterInner::String(b) => b.last(),
-        }
-    }
+    // fn last(self) -> Option<Self::Item>
+    // where Self: Sized {
+    //     match self.inner {
+    //         CollectionIterInner::Ref(v) => v.last().copied(),
+    //         CollectionIterInner::Borrowed(v) => v.last().map(|v| v.deref()),
+    //         CollectionIterInner::Owned(v) => v.last().map(|v| v.into()),
+    //         CollectionIterInner::String(b) => b.last(),
+    //     }
+    // }
 }
 
 impl<T: std::ops::Deref> CollectionIter<'_, T>
 where [T]: ToOwned
 {
     fn len(&self) -> usize {
-        match self.inner {
+        match &self.inner {
             CollectionIterInner::Ref(v) => v.len(),
             CollectionIterInner::Borrowed(v) => v.len(),
             CollectionIterInner::Owned(v) => v.len(),
@@ -297,7 +398,7 @@ where
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where D: serde::Deserializer<'de> {
         let collection: Vec<T> = serde::Deserialize::deserialize(deserializer)?;
-        Ok(Collection::Owned(Cow::from(collection)))
+        Ok(Collection::Owned(collection.into()))
     }
 }
 
@@ -307,6 +408,7 @@ where
     [T]: ToOwned,
     for<'s> &'s T::Target: serde::Serialize,
     for<'s> &'s T::Target: From<&'s str>,
+    for<'a> T: Borrow<T::Target>,
 {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where S: serde::Serializer {
@@ -315,7 +417,7 @@ where
 }
 
 //#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
-impl<T: Clone + std::ops::Deref> Clone for Collection<'_, T>
+impl<'c, T: std::ops::Deref> Clone for Collection<'c, T>
 where [T]: ToOwned
 {
     fn clone(&self) -> Self {
@@ -336,6 +438,7 @@ where
     T: PartialEq,
     T::Target: PartialEq,
     T: std::cmp::PartialEq<T::Target>,
+    for<'a> T: Borrow<T::Target>,
     for<'s> &'s T::Target: From<&'s str>,
     T::Target: std::fmt::Debug,
     T: std::fmt::Debug,
@@ -370,6 +473,7 @@ where
     T: PartialEq,
     T::Target: PartialEq,
     T: std::cmp::PartialEq<T::Target>,
+    for<'a> T: Borrow<T::Target>,
     for<'s> &'s T::Target: From<&'s str>,
     T::Target: std::fmt::Debug,
     T: std::fmt::Debug,

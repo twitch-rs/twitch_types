@@ -407,7 +407,7 @@ macro_rules! manual_braid {
         impl<'a> From<&'a Vec<String>>
             for $crate::collection::Collection<'a, $Owned>
         {
-            fn from(v: &'a Vec<String>) -> Self { Self::OwnedString(::std::borrow::Cow::from(v)) }
+            fn from(v: &'a Vec<String>) -> Self { Self::OwnedString(v.as_slice().into()) }
         }
 
         impl<'a> From<Vec<&'a $Borrowed>>
@@ -425,13 +425,13 @@ macro_rules! manual_braid {
         impl From<Vec<String>>
             for $crate::collection::Collection<'_, $Owned>
         {
-            fn from(v: Vec<String>) -> Self { Self::OwnedString(::std::borrow::Cow::from(v)) }
+            fn from(v: Vec<String>) -> Self { Self::OwnedString(v.into()) }
         }
 
         impl<'a> From<&'a [String]>
             for $crate::collection::Collection<'a, $Owned>
         {
-            fn from(v: &'a [String]) -> Self { Self::OwnedString(::std::borrow::Cow::from(v)) }
+            fn from(v: &'a [String]) -> Self { Self::OwnedString(v.into()) }
         }
 
         impl<'a> From<Vec<&'a String>>
@@ -467,13 +467,13 @@ macro_rules! manual_braid {
         impl<'a, const N: usize> From<&'a [$Owned; N]>
             for $crate::collection::Collection<'a, $Owned>
         {
-            fn from(v: &'a [$Owned; N]) -> Self { Self::Owned(::std::borrow::Cow::from(v.as_slice())) }
+            fn from(v: &'a [$Owned; N]) -> Self { Self::Owned(v.as_slice().into()) }
         }
 
         impl<'a, const N: usize> From<&'a [String; N]>
             for $crate::collection::Collection<'a, $Owned>
         {
-            fn from(v: &'a [String; N]) -> Self { Self::OwnedString(::std::borrow::Cow::from(v.as_slice())) }
+            fn from(v: &'a [String; N]) -> Self { Self::OwnedString(v.as_slice().into()) }
         }
 
         impl<'a, const N: usize> From<&'a [&'a $Owned; N]>
@@ -491,7 +491,7 @@ macro_rules! manual_braid {
         impl<'a> From<&'a $Owned>
             for $crate::collection::Collection<'a, $Owned>
         {
-            fn from(v: &'a $Owned) -> Self { Self::Owned(::std::borrow::Cow::from(std::slice::from_ref(v))) }
+            fn from(v: &'a $Owned) -> Self { Self::Owned(std::slice::from_ref(v).into()) }
         }
 
         impl<'a> From<&'a &'a $Borrowed>
