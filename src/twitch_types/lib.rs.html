@@ -207,6 +207,10 @@
 <a href="#207" id="207">207</a>
 <a href="#208" id="208">208</a>
 <a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
 </pre></div><pre class="rust"><code><span class="attr">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![allow(clippy::extra_unused_lifetimes)]
 #![cfg_attr(nightly, feature(doc_cfg))]
@@ -216,6 +220,9 @@
 </span><span class="attr">#[macro_use]
 #[doc(hidden)]
 </span><span class="kw">pub mod </span>macros;
+<span class="kw">mod </span>collection;
+
+<span class="kw">pub use </span>collection::{Collection, CollectionIter};
 
 <span class="doccomment">/// Convert a type into a [`Cow`](std::borrow::Cow)
 </span><span class="kw">pub trait </span>IntoCow&lt;<span class="lifetime">'a</span>, Ref: <span class="question-mark">?</span>Sized&gt;
@@ -367,6 +374,7 @@
     </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="attr">#[test]
+    #[allow(clippy::needless_borrows_for_generic_args)]
     </span><span class="kw">fn </span>lol() {
         <span class="macro">assert!</span>(broadcaster_id(<span class="string">"literal"</span>));
         <span class="macro">assert!</span>(!broadcaster_id(String::from(<span class="string">"string"</span>)));
