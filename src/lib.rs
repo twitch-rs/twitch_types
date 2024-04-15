@@ -161,6 +161,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[allow(clippy::needless_borrows_for_generic_args)]
     fn lol() {
         assert!(broadcaster_id("literal"));
         assert!(!broadcaster_id(String::from("string")));
