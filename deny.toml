@@ -45,7 +45,9 @@ allow = [
     "MPL-2.0", # Considered fair
     "ISC",
     "OpenSSL",
+    # unicode switched spdx codes
     "Unicode-DFS-2016",
+    "Unicode-3.0",
 ]
 # List of explictly disallowed licenses
 # See https://spdx.org/licenses/ for list of possible licenses
