@@ -257,6 +257,13 @@ macro_rules! manual_braid {
             }
         }
 
+        impl ::std::cmp::PartialEq<&'_ $Owned> for $Owned {
+            #[inline]
+            fn eq(&self, other: &&$Owned) -> bool {
+                self.as_str() == other.as_str()
+            }
+        }
+
         impl ::std::cmp::PartialEq<$Owned> for $Borrowed {
             #[inline]
             fn eq(&self, other: &$Owned) -> bool {
@@ -385,6 +392,119 @@ macro_rules! manual_braid {
             }
         }
 
+        impl<'a> From<&'a Vec<&'a $Owned>>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a Vec<&'a $Owned>) -> Self { Self::Borrowed(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<&'a Vec<&'a str>>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a Vec<&'a str>) -> Self { Self::RefStr(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<&'a Vec<String>>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a Vec<String>) -> Self { Self::OwnedString(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<Vec<&'a $Borrowed>>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: Vec<&'a $Borrowed>) -> Self { Self::Ref(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<&'a [&'a $Borrowed]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [&'a $Borrowed]) -> Self { Self::Ref(::std::borrow::Cow::from(v)) }
+        }
+
+        impl From<Vec<String>>
+            for $crate::collection::Collection<'_, $Owned>
+        {
+            fn from(v: Vec<String>) -> Self { Self::OwnedString(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<&'a [String]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [String]) -> Self { Self::OwnedString(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<Vec<&'a String>>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: Vec<&'a String>) -> Self { Self::BorrowedString(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<&'a [&'a String]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [&'a String]) -> Self { Self::BorrowedString(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<Vec<&'a str>>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: Vec<&'a str>) -> Self { Self::RefStr(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a> From<&'a [&'a str]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [&'a str]) -> Self { Self::RefStr(::std::borrow::Cow::from(v)) }
+        }
+
+        impl<'a, const N: usize> From<&'a [&'a str; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [&'a str; N]) -> Self { Self::RefStr(::std::borrow::Cow::from(v.as_slice())) }
+        }
+
+        impl<'a, const N: usize> From<&'a [$Owned; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [$Owned; N]) -> Self { Self::Owned(::std::borrow::Cow::from(v.as_slice())) }
+        }
+
+        impl<'a, const N: usize> From<&'a [String; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [String; N]) -> Self { Self::OwnedString(::std::borrow::Cow::from(v.as_slice())) }
+        }
+
+        impl<'a, const N: usize> From<&'a [&'a $Owned; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [&'a $Owned; N]) -> Self { Self::Borrowed(::std::borrow::Cow::from(v.as_slice())) }
+        }
+
+        impl<'a, const N: usize> From<&'a [&'a $Borrowed; N]>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a [&'a $Borrowed; N]) -> Self { Self::Ref(::std::borrow::Cow::Borrowed(v.as_slice())) }
+        }
+
+        impl<'a> From<&'a $Owned>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a $Owned) -> Self { Self::Owned(::std::borrow::Cow::from(std::slice::from_ref(v))) }
+        }
+
+        impl<'a> From<&'a &'a $Borrowed>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a &'a $Borrowed) -> Self { Self::Ref(::std::borrow::Cow::from(std::slice::from_ref(v))) }
+        }
+
+        impl<'a> From<&'a &'a str>
+            for $crate::collection::Collection<'a, $Owned>
+        {
+            fn from(v: &'a &'a str) -> Self { Self::RefStr(::std::borrow::Cow::from(std::slice::from_ref(v))) }
+        }
     }
 }
 

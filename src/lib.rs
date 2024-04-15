@@ -7,6 +7,9 @@
 #[macro_use]
 #[doc(hidden)]
 pub mod macros;
+mod collection;
+
+pub use collection::{Collection, CollectionIter};
 
 /// Convert a type into a [`Cow`](std::borrow::Cow)
 pub trait IntoCow<'a, Ref: ?Sized>
@@ -158,6 +161,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[allow(clippy::needless_borrows_for_generic_args)]
     fn lol() {
         assert!(broadcaster_id("literal"));
         assert!(!broadcaster_id(String::from("string")));
