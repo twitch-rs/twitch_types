@@ -56,3 +56,6 @@ members = ["xtask"]
 all-features = true
 rustc-args = ["--cfg", "nightly"]
 rustdoc-args = ["--cfg", "nightly"]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nightly)'] }
