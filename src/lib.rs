@@ -60,6 +60,9 @@ where
 
 mod basic;
 // cc: https://github.com/rust-lang/rust/issues/83428, can't use glob imports and keep the modules private
+#[cfg(feature = "chat")]
+/// types for chat
+pub mod chat;
 #[cfg(feature = "color")]
 /// types for colors
 pub mod color;
@@ -96,6 +99,8 @@ pub mod user;
 
 pub use basic::*;
 
+#[cfg(feature = "chat")]
+pub use crate::chat::*;
 #[cfg(feature = "color")]
 pub use crate::color::*;
 #[cfg(feature = "emote")]
