@@ -107,7 +107,7 @@ impl ::std::convert::TryFrom<::std::string::String> for Timestamp {
     #[inline]
     fn try_from(s: ::std::string::String) -> Result<Self, Self::Error> {
         const fn ensure_try_from_string_error_converts_to_validator_error<
-            T: ?Sized + From<<String as ::std::convert::TryFrom<::std::string::String>>::Error>,
+            T: From<<String as ::std::convert::TryFrom<::std::string::String>>::Error>,
         >() {
         }
 
