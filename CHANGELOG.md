@@ -6,6 +6,13 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.5...Unreleased)
 
+- Added `SharedChatSessionId` and `WhisperId` (feature `chat`)
+- Added `EntitlementId`, `BenefitId`, `OrganizationId`, and `EntitlementCampaignId` (feature `entitlements`)
+- Added `ConduitId` and `ConduitShardId` (feature `eventsub`)
+- Added `ExtensionId` (feature `extensions`)
+- Added `UnbanRequestid` (feature `moderation`)
+- Added `CclId`, `GuestStarSessionId`, `GuestStarSlotId`, and `StreamMarkerId` (feature `stream`)
+
 ## [v0.4.5] - 2024-04-15
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.4...v0.4.5)
