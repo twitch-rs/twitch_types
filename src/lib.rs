@@ -69,6 +69,9 @@ pub mod emote;
 #[cfg(feature = "eventsub")]
 /// types for eventsub related things
 pub mod eventsub;
+#[cfg(feature = "extension")]
+/// types for extensions
+pub mod extension;
 #[cfg(feature = "goal")]
 /// types for goals
 pub mod goal;
@@ -99,6 +102,8 @@ pub use crate::color::*;
 pub use crate::emote::*;
 #[cfg(feature = "eventsub")]
 pub use crate::eventsub::*;
+#[cfg(feature = "extension")]
+pub use crate::extension::*;
 #[cfg(feature = "goal")]
 pub use crate::goal::*;
 #[cfg(feature = "moderation")]
