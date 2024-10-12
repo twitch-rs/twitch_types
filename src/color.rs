@@ -226,7 +226,7 @@ impl<'a> From<Cow<'a, HexColorRef>> for NamedUserColor<'a> {
     fn from(color: Cow<'a, HexColorRef>) -> Self { NamedUserColor::Hex(color) }
 }
 
-impl<'a> From<HexColor> for NamedUserColor<'a> {
+impl From<HexColor> for NamedUserColor<'_> {
     fn from(color: HexColor) -> Self { NamedUserColor::Hex(color.into()) }
 }
 

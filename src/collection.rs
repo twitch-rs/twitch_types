@@ -193,7 +193,7 @@ where
     pub fn is_empty(&self) -> bool { self.len() == 0 }
 }
 
-impl<'a, T: std::ops::Deref + std::fmt::Debug> std::fmt::Debug for Collection<'a, T>
+impl<T: std::ops::Deref + std::fmt::Debug> std::fmt::Debug for Collection<'_, T>
 where
     [T]: ToOwned,
     <[T] as ToOwned>::Owned: std::fmt::Debug,

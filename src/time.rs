@@ -96,7 +96,7 @@ impl<'a> ::std::convert::From<::std::borrow::Cow<'a, TimestampRef>> for Timestam
     }
 }
 
-impl<'a> ::std::convert::From<Timestamp> for ::std::borrow::Cow<'a, TimestampRef> {
+impl ::std::convert::From<Timestamp> for ::std::borrow::Cow<'_, TimestampRef> {
     #[inline]
     fn from(owned: Timestamp) -> Self { ::std::borrow::Cow::Owned(owned) }
 }
