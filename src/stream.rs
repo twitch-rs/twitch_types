@@ -92,6 +92,13 @@ manual_braid! {
 }
 impl_extra!(GuestStarSlotId, GuestStarSlotIdRef);
 
+manual_braid! {
+    /// A stream marker ID
+    pub struct StreamMarkerId;
+    pub struct StreamMarkerIdRef;
+}
+impl_extra!(StreamMarkerId, StreamMarkerIdRef);
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Eq, Debug, Clone)]
 #[cfg_attr(
