@@ -69,6 +69,9 @@ pub mod color;
 #[cfg(feature = "emote")]
 /// types for emotes
 pub mod emote;
+#[cfg(feature = "entitlement")]
+/// types for entitlements
+pub mod entitlement;
 #[cfg(feature = "eventsub")]
 /// types for eventsub related things
 pub mod eventsub;
@@ -105,6 +108,8 @@ pub use crate::chat::*;
 pub use crate::color::*;
 #[cfg(feature = "emote")]
 pub use crate::emote::*;
+#[cfg(feature = "entitlement")]
+pub use crate::entitlement::*;
 #[cfg(feature = "eventsub")]
 pub use crate::eventsub::*;
 #[cfg(feature = "extension")]

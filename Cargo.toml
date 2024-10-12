@@ -36,6 +36,7 @@ default = []
 
 chat = []
 emote = ["serde"]
+entitlement = []
 moderation = ["serde"]
 points = ["serde"]
 stream = ["serde"]
