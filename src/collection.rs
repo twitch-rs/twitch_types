@@ -146,7 +146,7 @@ where
         }
     }
 
-    fn index(&'c self, range: impl std::ops::RangeBounds<usize>) -> Option<Collection<'_, T>> {
+    fn index(&'c self, range: impl std::ops::RangeBounds<usize>) -> Option<Collection<'c, T>> {
         let range = (range.start_bound().cloned(), range.end_bound().cloned());
         let new: Collection<'_, T> = match self {
             Collection::Owned(v) => Collection::Owned(Cow::Borrowed(v.get(range)?)),
@@ -162,7 +162,7 @@ where
     }
 
     /// Returns chunks of items, similar to [`slice::chunks`]
-    pub fn chunks(&'c self, chunk_size: usize) -> impl Iterator<Item = Collection<'_, T>> + '_ {
+    pub fn chunks(&'c self, chunk_size: usize) -> impl Iterator<Item = Collection<'c, T>> + 'c {
         let len = self.iter().len();
         let mut start = 0;
         std::iter::from_fn(move || {
@@ -193,7 +193,7 @@ where
     pub fn is_empty(&self) -> bool { self.len() == 0 }
 }
 
-impl<'a, T: std::ops::Deref + std::fmt::Debug> std::fmt::Debug for Collection<'a, T>
+impl<T: std::ops::Deref + std::fmt::Debug> std::fmt::Debug for Collection<'_, T>
 where
     [T]: ToOwned,
     <[T] as ToOwned>::Owned: std::fmt::Debug,

@@ -5,6 +5,13 @@ manual_braid! {
 }
 impl_extra!(BlockedTermId, BlockedTermIdRef);
 
+manual_braid! {
+    /// An unban request ID
+    pub struct UnbanRequestId;
+    pub struct UnbanRequestIdRef;
+}
+impl_extra!(UnbanRequestId, UnbanRequestIdRef);
+
 /// Status of a message that is or was in AutoMod queue
 #[derive(PartialEq, Eq, Debug, Clone)]
 #[cfg_attr(

@@ -78,6 +78,27 @@ manual_braid! {
 }
 impl_extra!(IgdbId, IgdbIdRef);
 
+manual_braid! {
+    /// A Guest Star Session ID
+    pub struct GuestStarSessionId;
+    pub struct GuestStarSessionIdRef;
+}
+impl_extra!(GuestStarSessionId, GuestStarSessionIdRef);
+
+manual_braid! {
+    /// A Guest Star Slot ID
+    pub struct GuestStarSlotId;
+    pub struct GuestStarSlotIdRef;
+}
+impl_extra!(GuestStarSlotId, GuestStarSlotIdRef);
+
+manual_braid! {
+    /// A stream marker ID
+    pub struct StreamMarkerId;
+    pub struct StreamMarkerIdRef;
+}
+impl_extra!(StreamMarkerId, StreamMarkerIdRef);
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Eq, Debug, Clone)]
 #[cfg_attr(

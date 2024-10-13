@@ -60,15 +60,24 @@ where
 
 mod basic;
 // cc: https://github.com/rust-lang/rust/issues/83428, can't use glob imports and keep the modules private
+#[cfg(feature = "chat")]
+/// types for chat
+pub mod chat;
 #[cfg(feature = "color")]
 /// types for colors
 pub mod color;
 #[cfg(feature = "emote")]
 /// types for emotes
 pub mod emote;
+#[cfg(feature = "entitlement")]
+/// types for entitlements
+pub mod entitlement;
 #[cfg(feature = "eventsub")]
 /// types for eventsub related things
 pub mod eventsub;
+#[cfg(feature = "extension")]
+/// types for extensions
+pub mod extension;
 #[cfg(feature = "goal")]
 /// types for goals
 pub mod goal;
@@ -93,12 +102,18 @@ pub mod user;
 
 pub use basic::*;
 
+#[cfg(feature = "chat")]
+pub use crate::chat::*;
 #[cfg(feature = "color")]
 pub use crate::color::*;
 #[cfg(feature = "emote")]
 pub use crate::emote::*;
+#[cfg(feature = "entitlement")]
+pub use crate::entitlement::*;
 #[cfg(feature = "eventsub")]
 pub use crate::eventsub::*;
+#[cfg(feature = "extension")]
+pub use crate::extension::*;
 #[cfg(feature = "goal")]
 pub use crate::goal::*;
 #[cfg(feature = "moderation")]

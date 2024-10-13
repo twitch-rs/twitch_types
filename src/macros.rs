@@ -181,7 +181,7 @@ macro_rules! manual_braid {
         impl ::std::cmp::PartialOrd for $Owned {
             #[inline]
             #[allow(unknown_lints)]
-            #[allow(clippy::incorrect_partial_ord_impl_on_ord_type)]
+            #[allow(clippy::non_canonical_partial_ord_impl)]
             fn partial_cmp(&self, other: &Self) -> ::std::option::Option<::std::cmp::Ordering> {
                 ::std::option::Option::Some(::std::cmp::Ord::cmp(self, other))
             }
