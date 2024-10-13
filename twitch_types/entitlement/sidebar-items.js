@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["BenefitId","BenefitIdRef","EntitlementCampaignId","EntitlementCampaignIdRef","EntitlementId","EntitlementIdRef","OrganizationId","OrganizationIdRef"]};
