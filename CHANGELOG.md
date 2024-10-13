@@ -4,7 +4,11 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.5...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.6...Unreleased)
+
+## [v0.4.6] - 2024-10-13
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.5...v0.4.6)
 
 - Added `SharedChatSessionId` and `WhisperId` (feature `chat`)
 - Added `EntitlementId`, `BenefitId`, `OrganizationId`, and `EntitlementCampaignId` (feature `entitlements`)
