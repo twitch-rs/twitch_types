@@ -99,6 +99,15 @@ manual_braid! {
 }
 impl_extra!(StreamMarkerId, StreamMarkerIdRef);
 
+manual_braid! {
+    redact("stream key");
+
+    /// A Stream Key (hidden [Debug] output)
+    pub struct StreamKey;
+    pub struct StreamKeyRef;
+}
+impl_extra!(StreamKey, StreamKeyRef);
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Eq, Debug, Clone)]
 #[cfg_attr(
