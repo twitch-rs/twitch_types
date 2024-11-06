@@ -9,7 +9,76 @@ macro_rules! manual_braid {
         $(#[$_unused_meta:meta])*
         $visref:vis struct $Borrowed:ident;
 
-      ) => {
+    ) => {
+        manual_braid! {
+            @common
+
+            $(#[$meta])*
+
+            $vis struct $Owned;
+            $(#[$_unused_meta])*
+            $visref struct $Borrowed;
+        }
+
+        impl ::std::fmt::Debug for $Owned {
+            #[inline]
+            fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+                <$Borrowed as ::std::fmt::Debug>::fmt(::std::ops::Deref::deref(self), f)
+            }
+        }
+
+        impl ::std::fmt::Debug for $Borrowed {
+            #[inline]
+            fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+                <str as ::std::fmt::Debug>::fmt(&self.0, f)
+            }
+        }
+    };
+
+    (
+        redact($redacted_type:literal);
+
+        $(#[$meta:meta])*
+
+        $vis:vis struct $Owned:ident;
+        $(#[$_unused_meta:meta])*
+        $visref:vis struct $Borrowed:ident;
+
+    ) => {
+        manual_braid! {
+            @common
+
+            $(#[$meta])*
+
+            $vis struct $Owned;
+            $(#[$_unused_meta])*
+            $visref struct $Borrowed;
+        }
+
+        impl ::std::fmt::Debug for $Owned {
+            #[inline]
+            fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+                f.write_str(concat!("[redacted ", $redacted_type, "]"))
+            }
+        }
+
+        impl ::std::fmt::Debug for $Borrowed {
+            #[inline]
+            fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+                f.write_str(concat!("[redacted ", $redacted_type, "]"))
+            }
+        }
+    };
+
+    (
+        @common
+        $(#[$meta:meta])*
+
+        $vis:vis struct $Owned:ident;
+        $(#[$_unused_meta:meta])*
+        $visref:vis struct $Borrowed:ident;
+
+    ) => {
 
         $(#[$meta])*
         #[derive(Clone, Hash, PartialEq, Eq)]
@@ -154,13 +223,6 @@ macro_rules! manual_braid {
             #[inline]
             fn deref(&self) -> &Self::Target {
                 $Borrowed::from_str(::std::convert::AsRef::as_ref(&self.0))
-            }
-        }
-
-        impl ::std::fmt::Debug for $Owned {
-            #[inline]
-            fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-                <$Borrowed as ::std::fmt::Debug>::fmt(::std::ops::Deref::deref(self), f)
             }
         }
 
@@ -345,13 +407,6 @@ macro_rules! manual_braid {
                 unsafe {
                     ::std::sync::Arc::from_raw(::std::sync::Arc::into_raw(arc) as *const $Borrowed)
                 }
-            }
-        }
-
-        impl ::std::fmt::Debug for $Borrowed {
-            #[inline]
-            fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-                <str as ::std::fmt::Debug>::fmt(&self.0, f)
             }
         }
 

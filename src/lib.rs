@@ -225,4 +225,23 @@ mod tests {
         };
         matches!(k.id, std::borrow::Cow::Borrowed(_))
     }
+
+    #[test]
+    fn debug_output_shown() {
+        let uid = UserIdRef::from_static("my-user-id");
+        let owned_uid = uid.to_owned();
+
+        assert_eq!(format!("{uid:?}"), "\"my-user-id\"");
+        assert_eq!(format!("{owned_uid:?}"), "\"my-user-id\"");
+    }
+
+    #[test]
+    #[cfg(feature = "stream")]
+    fn debug_output_hidden() {
+        let key = StreamKey::from_static("my-stream-key");
+        let owned_key = key.to_owned();
+
+        assert_eq!(format!("{key:?}"), "[redacted stream key]");
+        assert_eq!(format!("{owned_key:?}"), "[redacted stream key]");
+    }
 }
