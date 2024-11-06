@@ -4,7 +4,11 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.6...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.7...Unreleased)
+
+## [v0.4.7] - 2024-11-06
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.6...v0.4.7)
 
 - Added `StreamKey` (feature `stream`)
 
