@@ -256,7 +256,7 @@ impl_extra!(EmoteSetId, EmoteSetIdRef);
 )]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct ResubscriptionEmote {
+pub struct EmoteOccurrence {
     /// The index of where the Emote starts in the text.
     pub begin: i64,
     /// The index of where the Emote ends in the text.
@@ -265,11 +265,15 @@ pub struct ResubscriptionEmote {
     pub id: EmoteId,
 }
 
-impl std::fmt::Display for ResubscriptionEmote {
+impl std::fmt::Display for EmoteOccurrence {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}:{}-{}", self.id, self.begin, self.end)
     }
 }
+
+/// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.
+#[deprecated(since = "0.4.8", note = "Use EmoteOccurrence instead")]
+pub type ResubscriptionEmote = EmoteOccurrence;
 
 /// Links to the same image of different sizes
 #[derive(Clone, Debug, PartialEq, Eq)]

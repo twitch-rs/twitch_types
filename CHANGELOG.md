@@ -6,6 +6,9 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.7...Unreleased)
 
+- Changed `ResubscriptionEmote` to `EmoteOccurrence`
+- Deprecated `ResubscriptionEmote` (alias to `EmoteOccurrence`)
+
 ## [v0.4.7] - 2024-11-06
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.6...v0.4.7)
