@@ -6,6 +6,7 @@
 
 [Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.7...Unreleased)
 
+- Added `ContentClassificationId::DebatedSocialIssuesAndPolitics`
 - Changed `ResubscriptionEmote` to `EmoteOccurrence`
 - Deprecated `ResubscriptionEmote` (alias to `EmoteOccurrence`)
 
