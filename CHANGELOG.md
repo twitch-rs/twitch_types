@@ -4,8 +4,13 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.7...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.8...Unreleased)
 
+## [v0.4.8] - 2024-11-21
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.7...v0.4.8)
+
+- Added `ContentClassificationId::DebatedSocialIssuesAndPolitics`
 - Changed `ResubscriptionEmote` to `EmoteOccurrence`
 - Deprecated `ResubscriptionEmote` (alias to `EmoteOccurrence`)
 

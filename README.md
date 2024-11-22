@@ -1,6 +1,6 @@
 # Twitch Types | Rust library for common types used in Twitch
 
-[![github]](https://github.com/twitch-rs/twitch_types)&ensp;[![crates-io]](https://crates.io/crates/twitch_types)&ensp;[![docs-rs-big]](https://docs.rs/twitch_types/0.4.7/twitch_types)
+[![github]](https://github.com/twitch-rs/twitch_types)&ensp;[![crates-io]](https://crates.io/crates/twitch_types)&ensp;[![docs-rs-big]](https://docs.rs/twitch_types/0.4.8/twitch_types)
 
 [github]: https://img.shields.io/badge/github-twitch--rs/twitch__types-8da0cb?style=for-the-badge&labelColor=555555&logo=github
 [crates-io]: https://img.shields.io/crates/v/twitch_types.svg?style=for-the-badge&color=fc8d62&logo=rust

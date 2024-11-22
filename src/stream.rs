@@ -348,6 +348,10 @@ impl core::fmt::Display for CommercialLengthParseError {
 #[cfg_attr(feature = "serde", derive(serde_derive::Deserialize))]
 #[cfg_attr(feature = "serde", serde(field_identifier))]
 pub enum ContentClassificationId {
+    /// Politics and Sensitive Social Issues
+    ///
+    /// Discussions or debates about politics or sensitive social issues such as elections, civic integrity, military conflict, and civil rights in a polarizing manner.
+    DebatedSocialIssuesAndPolitics,
     /// Drugs, Intoxication, or Excessive Tobacco Use
     ///
     /// Excessive tobacco glorification or promotion, any marijuana consumption/use, legal drug and alcohol induced intoxication, discussions of illegal drugs.
@@ -381,6 +385,9 @@ impl Serialize for ContentClassificationId {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where S: serde::Serializer {
         serializer.serialize_str(match self {
+            ContentClassificationId::DebatedSocialIssuesAndPolitics => {
+                "DebatedSocialIssuesAndPolitics"
+            }
             ContentClassificationId::DrugsIntoxication => "DrugsIntoxication",
             ContentClassificationId::SexualThemes => "SexualThemes",
             ContentClassificationId::ViolentGraphic => "ViolentGraphic",
