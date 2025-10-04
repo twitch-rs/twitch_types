@@ -1,7 +1,6 @@
 #![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![allow(clippy::extra_unused_lifetimes)]
 #![cfg_attr(nightly, feature(doc_cfg))]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
 //! Twitch types
 
 #[macro_use]
