@@ -4,9 +4,13 @@
 
 ## [Unreleased] - ReleaseDate
 
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.9...Unreleased)
+
+## [v0.4.9] - 2025-10-04
+
 - Removed the nightly feature `doc_auto_cfg` (removed from Rust in https://redirect.github.com/rust-lang/rust/pull/138907)
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.8...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.8...v0.4.9)
 
 ## [v0.4.8] - 2024-11-21
 
