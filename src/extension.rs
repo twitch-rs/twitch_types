@@ -5,14 +5,14 @@ manual_braid! {
 }
 impl_extra!(ExtensionId, ExtensionIdRef);
 
-manual_braid!{
+manual_braid! {
     /// An Extension Client ID
     pub struct ExtensionClientId;
     pub struct ExtensionClientIdRef;
 }
 impl_extra!(ExtensionClientId, ExtensionClientIdRef);
 
-manual_braid!{
+manual_braid! {
     /// A Bits Transaction ID
     pub struct BitsTransactionId;
     pub struct BitsTransactionIdRef;
