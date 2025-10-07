@@ -4,7 +4,13 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.9...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.10...Unreleased)
+
+## [v0.4.10] - 2025-10-07
+
+- Added `ExtensionClientId` and `BitsTransactionId` (feature `extension`)
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.9...v0.4.10)
 
 ## [v0.4.9] - 2025-10-04
 
