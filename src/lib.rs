@@ -98,6 +98,9 @@ pub mod time;
 #[cfg(feature = "user")]
 /// types for user related things
 pub mod user;
+#[cfg(feature = "broadcaster")]
+/// types for broadcaster related things
+pub mod broadcaster;
 
 pub use basic::*;
 
@@ -127,6 +130,8 @@ pub use crate::sub::*;
 pub use crate::time::*;
 #[cfg(feature = "user")]
 pub use crate::user::*;
+#[cfg(feature = "broadcaster")]
+pub use crate::broadcaster::*;
 
 #[cfg(all(feature = "serde", feature = "stream"))]
 fn deserialize_none_from_empty_string<'de, D, S>(deserializer: D) -> Result<Option<S>, D::Error>
