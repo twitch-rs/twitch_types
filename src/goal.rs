@@ -24,4 +24,8 @@ pub enum CreatorGoalType {
     NewSubscription,
     /// The goal is to increase subscriptions. This type shows only the net increase in the number of subscriptions (it does not account for users that unsubscribed since the goal started).
     NewSubscriptionCount,
+    /// The goal is to increase the amount of Bits used on the channel.
+    NewBit,
+    /// The goal is to increase the amount of unique Cheerers on to Cheer on the channel.
+    NewCheerer,
 }
