@@ -4,9 +4,10 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.10...Unreleased)
-
 - Changed MSRV to 1.88.0
+- Updated `CreatorGoalType` with new values
+
+[Commits](https://github.com/twitch-rs/twitch_types/compare/v0.4.10...Unreleased)
 
 ## [v0.4.10] - 2025-10-07
 
